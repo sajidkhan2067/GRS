@@ -192,13 +192,15 @@ public class MainActivity extends AppCompatActivity{
         });
         urlLoader(getResources().getString(R.string.project_url));
 
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuinflater = getMenuInflater();
         menuinflater.inflate(R.menu.toolbar_menu, menu);
-
+       // item = menu.findItem(R.id.action_home);
         item = menu.findItem(R.id.action_info);
         item.setVisible(isSaved);
         invalidateOptionsMenu();
@@ -210,8 +212,16 @@ public class MainActivity extends AppCompatActivity{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Snackbar.make(rootLayout, "Refreshing...", 1000).show();
-        reload_webview();
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_home:
+                urlLoader(getResources().getString(R.string.project_url));
+                return true;
+            case R.id.action_info:
+                reload_webview();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void urlLoader(String url){
