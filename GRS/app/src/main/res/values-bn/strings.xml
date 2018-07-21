@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">অভিযোগ প্রতিকার ব্যবস্থা </string>
+    <string name="short_detail">পরিকল্পনায় : এটুআই \nবাস্তবায়নে : রিভ সিস্টেমস</string>
+    <string name="project_url">http://103.48.18.9/</string>
+    <string name="project_login_success_url">http://103.48.18.9/login/success</string>
+    <string name="db_name">user_db</string>
+    <string name="saveCookies">saveCookies</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="dialog_yes">হ্যাঁ</string>
+    <string name="dialog_no">না</string>
+    <string name="logged_in">logged_in</string>
+    <string name="authorization">Authorization</string>
+    <string name="dicided">dicided</string>
+    <string name="save_signin">"সাইন ইন তথ্য সংরক্ষণ করুন?"</string>
+    <string name="lang">"lang=en"</string>
+
+</resources>

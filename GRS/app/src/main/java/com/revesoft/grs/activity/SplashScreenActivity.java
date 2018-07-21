@@ -1,10 +1,12 @@
-package com.revesoft.grs;
+package com.revesoft.grs.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import com.revesoft.grs.R;
 
 
 public class SplashScreenActivity extends AppCompatActivity{
