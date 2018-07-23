@@ -4,6 +4,7 @@
     <string name="short_detail">পরিকল্পনায় : এটুআই \nবাস্তবায়নে : রিভ সিস্টেমস</string>
     <string name="project_url">http://103.48.18.9/</string>
     <string name="project_login_success_url">http://103.48.18.9/login/success</string>
+    <string name="project_login_url"> http://idp.doptor.gov.bd/</string>
     <string name="db_name">user_db</string>
     <string name="saveCookies">saveCookies</string>
     <string name="yes">yes</string>
@@ -15,4 +16,6 @@
     <string name="dicided">dicided</string>
     <string name="save_signin">"Save sign-in information ?"</string>
     <string name="lang">"lang=en"</string>
+    <string name="no_internet_title">"No internet Connection!"</string>
+    <string name="no_internet_message">"Please connect to Internet !"</string>
 </resources>
