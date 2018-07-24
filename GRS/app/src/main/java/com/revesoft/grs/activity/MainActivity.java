@@ -59,8 +59,6 @@ public class MainActivity extends AppCompatActivity{
     PermissionListener listener;
     Context context;
     MenuItem item;
-    boolean isSaved;
-    boolean finalIsSaved;
     ProgressBar progressBar;
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
@@ -96,7 +94,6 @@ public class MainActivity extends AppCompatActivity{
             }
         };
 
-
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.INTERNET)
                 .withListener(listener)
@@ -106,7 +103,6 @@ public class MainActivity extends AppCompatActivity{
                 .withPermission(Manifest.permission.ACCESS_NETWORK_STATE)
                 .withListener(listener)
                 .check();
-
 
         if(!isNetworkAvailable()){
             AlertDialog.Builder builder = null;
@@ -131,12 +127,6 @@ public class MainActivity extends AppCompatActivity{
         button.setVisibility(View.VISIBLE);
         webview.setVisibility(View.GONE);
 
-        isSaved = true;
-
-        if(sharedPref.getString("url", "").isEmpty()){
-            isSaved = false;
-        }
-
         ws = webview.getSettings();
         webview.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -159,24 +149,14 @@ public class MainActivity extends AppCompatActivity{
 
         });
 
-
-
-        if(isSaved){
-            load_webview();
-        }
-
-         finalIsSaved = isSaved;
+        load_webview();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 urlLoader(editText.getText().toString());
-
-
             }
         });
         urlLoader(getResources().getString(R.string.project_url));
-
-
     }
 
     @Override
@@ -184,14 +164,10 @@ public class MainActivity extends AppCompatActivity{
         MenuInflater menuinflater = getMenuInflater();
         menuinflater.inflate(R.menu.toolbar_menu, menu);
         item = menu.findItem(R.id.action_info);
-        item.setVisible(isSaved);
         invalidateOptionsMenu();
 
         return super.onCreateOptionsMenu(menu);
     }
-
-
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -207,8 +183,6 @@ public class MainActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
-
-
 
     private void urlLoader(String url){
         editText.setVisibility(View.GONE);
@@ -247,7 +221,6 @@ public class MainActivity extends AppCompatActivity{
             }
 
 
-
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -277,7 +250,7 @@ public class MainActivity extends AppCompatActivity{
                           && sharedPref.getString(getResources().getString(R.string.saveCookies), "").compareTo("")==0){
 
                     if(cookies!=null && cookies.contains(getResources().getString(R.string.authorization))) {
-                        open();
+                        openDialog();
                     }
                 }else {
 
@@ -306,11 +279,7 @@ public class MainActivity extends AppCompatActivity{
             showError();
         }
 
-
-        if(!finalIsSaved){
-            editor.putString("url", url).apply();
-        }
-        isSaved = true;
+        editor.putString("url", url).apply();
         invalidateOptionsMenu();
     }
 
@@ -349,14 +318,14 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    public void open(){
+    public void openDialog(){
         final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setMessage(getResources().getString(R.string.save_signin));
                 alertDialogBuilder.setPositiveButton(getResources().getString(R.string.dialog_yes),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
-                                editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.yes)).apply();
+                                saveCookies();
                                 alertDialog.dismiss();
                             }
                         });
@@ -376,10 +345,13 @@ public class MainActivity extends AppCompatActivity{
     private void notDicided(){
         editor.putString(getResources().getString(R.string.saveCookies), "").apply();
     }
+    private void saveCookies(){
+        editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.yes)).apply();
+    }
     private void showError(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("No Internet")
-                .setMessage("No Internect access!")
+        builder.setTitle(getResources().getString(R.string.no_internet_title))
+                .setMessage(getResources().getString(R.string.no_internet_message))
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
