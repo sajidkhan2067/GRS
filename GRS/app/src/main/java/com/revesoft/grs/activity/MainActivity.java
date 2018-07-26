@@ -45,7 +45,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.revesoft.grs.R;
-
 import java.util.Locale;
 
 
@@ -122,7 +121,6 @@ public class MainActivity extends AppCompatActivity{
         editText = findViewById(R.id.url);
         button = findViewById(R.id.go_web_view);
         webview = findViewById(R.id.webView);
-
         editText.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
         webview.setVisibility(View.GONE);
@@ -165,7 +163,6 @@ public class MainActivity extends AppCompatActivity{
         menuinflater.inflate(R.menu.toolbar_menu, menu);
         item = menu.findItem(R.id.action_info);
         invalidateOptionsMenu();
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -189,7 +186,7 @@ public class MainActivity extends AppCompatActivity{
         button.setVisibility(View.GONE);
         webview.setVisibility(View.VISIBLE);
         if(url.compareTo(getResources().getString(R.string.project_url))==0){
-              if(sharedPref.getString(getResources().getString(R.string.saveCookies), "yes").compareTo("no")==0){
+              if(isNeededToClearCookies()){
                   clearCookies();
                   Log.d("Cookies","Clear cookies");
               }
@@ -252,8 +249,6 @@ public class MainActivity extends AppCompatActivity{
                     if(cookies!=null && cookies.contains(getResources().getString(R.string.authorization))) {
                         openDialog();
                     }
-                }else {
-
                 }
 
             }
@@ -290,7 +285,6 @@ public class MainActivity extends AppCompatActivity{
         Configuration conf = res.getConfiguration();
         conf.locale = myLocale;
         res.updateConfiguration(conf, dm);
-
     }
 
 
@@ -305,8 +299,7 @@ public class MainActivity extends AppCompatActivity{
             editor.putString(getResources().getString(R.string.saveCookies), "").apply();
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
-        } else
-        {
+        } else  {
             Log.d("clearCookies", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
             CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
             cookieSyncMngr.startSync();
@@ -365,7 +358,10 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(isNeededToClearCookies()){
             clearCookies();
+            Log.d("Cookies","Clear cookies");
+        }
         Log.d("Cookies","Clear cookies :"+sharedPref.getString(getResources().getString(R.string.saveCookies), ""));
     }
 
@@ -376,6 +372,15 @@ public class MainActivity extends AppCompatActivity{
         }
         else {
             super.onBackPressed();
+        }
+    }
+
+    private boolean isNeededToClearCookies(){
+        if(sharedPref.getString(getResources().getString(R.string.saveCookies),
+                getResources().getString(R.string.yes)).compareTo(getResources().getString(R.string.no))==0){
+            return true;
+        }else {
+            return false;
         }
     }
 
