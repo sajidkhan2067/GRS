@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#1B5E20</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="green">#8CC63E</color>
+    <color name="text_color_primary">#090909</color>
+    <color name="text_color_english_header">#44fff0f0</color>
+    <color name="text_color_primary_inverse">#f9f9f9</color>
+    <color name="text_color_special">#f58218</color>
+    <color name="text_color_special_disabled">#66f58218</color>
+    <color name="color_splash_screen_background">#f17023</color>
+    <color name="color_background">#F4F5F6</color>
+    <color name="top_search_list_background">#F4F5F6</color>
+    <color name="top_sliding_menu">#A4A4A4</color>
+
+    <!--tab selector-->
+    <color name="colorBlue">#4D008C</color>
+    <color name="colorBlueDark">#3F0078</color>
+    <color name="indicator">#ffffff</color>
+
+    <!--orange button-->
+    <color name="orange_button_normal">#F7931E</color>
+    <color name="orange_button_pressed">#FFD75C12</color>
+    <color name="orange_button_hovered">#fc6c15</color>
+    <color name="orange_button_focused">#fc6c15</color>
+    <color name="orange_button_selected">#FFFA6409</color>
+
+
+    <!--flat button-->
+    <color name="flat_button_normal">#00F4F5F6</color>
+    <color name="flat_button_pressed">#44000000</color>
+    <color name="flat_button_hovered">#66000000</color>
+    <color name="flat_button_focused">#33000000</color>
+    <color name="flat_button_selected">#88000000</color>
+
+
+    <!--flat button-->
+    <color name="white_button_normal">@color/Primary_Grey_100</color>
+    <color name="white_button_pressed">@color/Primary_Grey_500</color>
+    <color name="white_button_hovered">@color/Primary_Grey_300</color>
+    <color name="white_button_focused">@color/Primary_Grey_200</color>
+    <color name="white_button_selected">@color/Primary_Grey_600</color>
+
+
+    <!--grey button-->
+    <color name="grey_button_normal">#898989</color>
+    <color name="grey_button_pressed">#787272</color>
+    <color name="grey_button_hovered">#b7b7b7</color>
+    <color name="grey_button_focused">#b7b7b7</color>
+    <color name="grey_button_selected">#b7b0b0</color>
+
+    <!--grey button-->
+    <color name="table_bar_background">#cecece</color>
+    <color name="table_bar_text_color">#767676</color>
+
+
+    <color name="Primary_Grey_50">#FAFAFA</color>
+    <color name="Primary_Grey_100">#F5F5F5</color>
+    <color name="Primary_Grey_200">#EEEEEE</color>
+    <color name="Primary_Grey_300">#E0E0E0</color>
+    <color name="Primary_Grey_400">#BDBDBD</color>
+    <color name="Primary_Grey_500">#9E9E9E</color>
+    <color name="Primary_Grey_600">#757575</color>
+    <color name="Primary_Grey_700">#616161</color>
+    <color name="Primary_Grey_800">#424242</color>
+    <color name="Primary_Grey_900">#212121</color>
+
+    <color name="divider">@color/Primary_Grey_400</color>
+</resources>
