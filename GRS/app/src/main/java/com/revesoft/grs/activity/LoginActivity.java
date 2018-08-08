@@ -181,13 +181,13 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
             case R.id.complainant_sign_in_button:
                 Log.d(TAG, "Log In Button Pressed.");
                 if (!checkEmpty(mobileNumberEditText)) {
-                    snackbarMessages("Enter your mobile number.");
+                    snackbarMessages(getResources().getString(R.string.empty_username));
                    // Toast.makeText(LoginActivity.this, "Enter your mobile number.", Toast.LENGTH_SHORT).show();
                 } else if (!checkEmpty(passwordEditText)) {
-                    snackbarMessages("Enter your password.");
+                    snackbarMessages(getResources().getString(R.string.empty_pin));
                    // Toast.makeText(LoginActivity.this, "Enter your password.", Toast.LENGTH_SHORT).show();
                 } else if (!mobileNumberEditText.getText().toString().trim().matches(VALID_MOBILE_REG_EX)) {
-                    snackbarMessages("Enter a valid mobile number.");
+                    snackbarMessages(getResources().getString(R.string.valid_username_pass));
                    // Toast.makeText(LoginActivity.this, "Enter a valid mobile number.", LENGTH_SHORT).show();
                 }else if (checkEmpty(mobileNumberEditText) && checkEmpty(passwordEditText)) {
 
@@ -424,7 +424,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
                 LoginActivity.this);
 
 // Setting Dialog Title
-        alertDialog2.setTitle("Want to exit ?");
+        alertDialog2.setTitle(getResources().getString(R.string.prompt_exit));
 
 // Setting Dialog Message
         //  alertDialog2.setMessage("Are you sure you want delete this file?");
@@ -433,7 +433,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         //   alertDialog2.setIcon(R.drawable.delete);
 
         // Setting Positive "Yes" Btn
-        alertDialog2.setPositiveButton("Yes",
+        alertDialog2.setPositiveButton(getResources().getString(R.string.dialog_yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog
@@ -445,7 +445,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
                     }
                 });
 // Setting Negative "NO" Btn
-        alertDialog2.setNegativeButton("No",
+        alertDialog2.setNegativeButton(getResources().getString(R.string.dialog_no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to execute after dialog

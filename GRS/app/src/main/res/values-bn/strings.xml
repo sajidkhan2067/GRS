@@ -22,5 +22,14 @@
     <string name="action_sign_up">"নিবন্ধন করুন"</string>
     <string name="username">"মোবাইল নম্বর"</string>
     <string name="password">"পিন"</string>
+    <string name="empty_username">"আপনার মোবাইল নাম্বার দিন"</string>
+    <string name="valid_username">"একটি বৈধ মোবাইল নম্বর দিন"</string>
+    <string name="valid_username_pin">"একটি বৈধ মোবাইল নম্বর বা পিন দিন"</string>
+    <string name="empty_pin">"আপনার পিন দিন"</string>
+    <string name="prompt_exit">প্রস্থান করতে চান?</string>
+    <string name="choose_selection">আপনার নির্বাচনটি ঠিক করুন</string>
+    <string name="keep_looged_in">লগ ইন রাখুন</string>
+    <string name="log_out">প্রস্থান</string>
+    <string name="cancel">বাতিল</string>
 
 </resources>

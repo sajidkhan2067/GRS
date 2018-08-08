@@ -12,6 +12,10 @@
     <string name="save_signin">"Save sign-in information ?"</string>
     <string name="username">"Mobile Number"</string>
     <string name="password">"Pin"</string>
+    <string name="empty_username">"Enter your mobile number"</string>
+    <string name="valid_username">"Enter a valid mobile number"</string>
+    <string name="valid_username_pin">"Enter a valid mobile number or pin"</string>
+    <string name="empty_pin">"Enter your pin"</string>
     <string name="no_internet_title">"No internet Connection!"</string>
     <string name="no_internet_message">"Please connect to Internet !"</string>
     <string name="no_account">"Don't have an account?"</string>
@@ -21,5 +25,11 @@
     <string name="action_admin_sign_in">"Admin Login"</string>
     <string name="valid_username_pass">Please enter a valid username or password</string>
     <string name="logout_success">Log out successful</string>
+    <string name="prompt_exit">Want to exit ?</string>
+    <string name="choose_selection">Choose your selection</string>
+    <string name="keep_looged_in">Keep Logged in</string>
+    <string name="log_out">Log out</string>
+    <string name="cancel">Cancel</string>
+
 
 </resources>

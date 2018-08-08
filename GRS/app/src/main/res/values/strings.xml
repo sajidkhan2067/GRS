@@ -20,5 +20,9 @@
     <string name="password">"পিন"</string>
     <string name="valid_username_pass">দয়া করে একটি বৈধ ব্যবহারকারী নাম বা পাসওয়ার্ড লিখুন</string>
     <string name="logout_success">লগ আউট সফল</string>
+    <string name="choose_selection">আপনার নির্বাচনটি নির্বাচন করুন</string>
+    <string name="keep_looged_in">লগ ইন রাখুন?</string>
+    <string name="log_out">প্রস্থান ?</string>
+    <string name="cancel">বাতিল</string>
 
 </resources>

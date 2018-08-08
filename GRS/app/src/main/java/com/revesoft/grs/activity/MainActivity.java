@@ -466,7 +466,7 @@ public class MainActivity extends AppCompatActivity{
               MainActivity.this);
 
 // Setting Dialog Title
-      alertDialog2.setTitle("Choose your selection");
+      alertDialog2.setTitle(getResources().getString(R.string.choose_selection));
 
 // Setting Dialog Message
     //  alertDialog2.setMessage("Are you sure you want delete this file?");
@@ -475,7 +475,7 @@ public class MainActivity extends AppCompatActivity{
    //   alertDialog2.setIcon(R.drawable.delete);
 
 // Setting Positive "Yes" Btn
-      alertDialog2.setNeutralButton("Keep Logged in ?",
+      alertDialog2.setNeutralButton(getResources().getString(R.string.keep_looged_in),
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
                       // Write your code here to execute after dialog
@@ -486,7 +486,7 @@ public class MainActivity extends AppCompatActivity{
                   }
               });
       // Setting Positive "Yes" Btn
-      alertDialog2.setPositiveButton("Log out ?",
+      alertDialog2.setNegativeButton(getResources().getString(R.string.log_out),
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
                       // Write your code here to execute after dialog
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity{
                   }
               });
 // Setting Negative "NO" Btn
-      alertDialog2.setNegativeButton("Cancel",
+      alertDialog2.setPositiveButton(getResources().getString(R.string.cancel),
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
                       // Write your code here to execute after dialog
