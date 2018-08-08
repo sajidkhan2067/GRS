@@ -37,6 +37,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import android.widget.Toolbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -45,6 +46,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.revesoft.grs.R;
+import com.revesoft.grs.util.API;
+import com.revesoft.grs.util.Constant;
+import com.revesoft.grs.util.api.data.item.user.UserStatus;
+
+import org.apache.http.util.EncodingUtils;
+
 import java.util.Locale;
 
 
@@ -65,16 +72,27 @@ public class MainActivity extends AppCompatActivity{
     Toolbar toolbar;
     AlertDialog alertDialog;
     CookieManager cookieManager;
+    String url,latestUrl;
+    UserStatus userStatus;
+    boolean isLoginRequest;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main_activity);
 
+        userStatus = new UserStatus(MainActivity.this);
+        Intent intent = getIntent();
+        if (intent!=null) {
+             url = intent.getStringExtra(Constant.url);
+             if(url.compareTo(API.COMPLAINANT_SIGN_IN_TAG_URL)==0){
+                 isLoginRequest=true;
+             }
+
+        }
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         progressBar = findViewById(R.id.progressbar);
         editor = sharedPref.edit();
-
         rootLayout = findViewById(R.id.root_layout);
         context = this;
         listener = new PermissionListener() {
@@ -154,7 +172,7 @@ public class MainActivity extends AppCompatActivity{
                 urlLoader(editText.getText().toString());
             }
         });
-        urlLoader(getResources().getString(R.string.project_url));
+        urlLoader(url);
     }
 
     @Override
@@ -171,7 +189,7 @@ public class MainActivity extends AppCompatActivity{
         Snackbar.make(rootLayout, "Refreshing...", 1000).show();
         switch (item.getItemId()) {
             case R.id.action_home:
-                urlLoader(getResources().getString(R.string.project_url));
+                urlLoader(API.APP_URL);
                 return true;
             case R.id.action_info:
                 reload_webview();
@@ -185,12 +203,12 @@ public class MainActivity extends AppCompatActivity{
         editText.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
         webview.setVisibility(View.VISIBLE);
-        if(url.compareTo(getResources().getString(R.string.project_url))==0){
-              if(isNeededToClearCookies()){
-                  clearCookies();
-                  Log.d("Cookies","Clear cookies");
-              }
-        }
+//        if(url.compareTo(getResources().getString(R.string.project_url))==0){
+//              if(isNeededToClearCookies()){
+//                  clearCookies();
+//                  Log.d("Cookies","Clear cookies");
+//              }
+//        }
 
         ws.setJavaScriptEnabled(true);
         ws.setDomStorageEnabled(true);
@@ -221,12 +239,26 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                latestUrl=url;
                 Log.d("Cookies","onPageStarted :"+url);
-                if(url.compareTo(getResources().getString(R.string.project_login_success_url))==0){
-                    editor.putString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)).apply();
-                }else  if(url.contains(getResources().getString(R.string.project_login_url))){
-                    editor.putString(getResources().getString(R.string.saveCookies), "").apply();
-                }
+               if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL ) || (url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL)&& !isLoginRequest) ){
+                   userStatus.setUser_password("");
+                   userStatus.setUser_mobile("");
+                   Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                   if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL)) {
+                       intent.putExtra(Constant.message, getResources().getString(R.string.valid_username_pass));
+                   }else  if( url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL)) {
+                       intent.putExtra(Constant.message, getResources().getString(R.string.logout_success));
+                   }
+                   startActivity(intent);
+
+                   finish();
+               }
+//                if(url.compareTo(getResources().getString(R.string.project_login_success_url))==0){
+//                    editor.putString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)).apply();
+//                }else  if(url.contains(getResources().getString(R.string.project_login_url))){
+//                    editor.putString(getResources().getString(R.string.saveCookies), "").apply();
+//                }
 
             }
 
@@ -234,22 +266,23 @@ public class MainActivity extends AppCompatActivity{
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 Log.d("Cookies","onPageFinished :"+url);
-                String cookies = CookieManager.getInstance().getCookie(url);
-                if(cookies!=null && cookies.contains(getResources().getString(R.string.lang))) {
-                    setLocale("en");
-                }else {
-                    setLocale("bn");
-                }
-
-                Log.d("Cookies","sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes) :"+sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)));
-                Log.d("Cookies","sharedPref.getString(getResources().getString(R.string.saveCookies), \"\"):"+sharedPref.getString(getResources().getString(R.string.saveCookies), ""));
-                  if(sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)).compareTo(getResources().getString(R.string.yes))==0
-                          && sharedPref.getString(getResources().getString(R.string.saveCookies), "").compareTo("")==0){
-
-                    if(cookies!=null && cookies.contains(getResources().getString(R.string.authorization))) {
-                        openDialog();
-                    }
-                }
+                isLoginRequest=false;
+//                String cookies = CookieManager.getInstance().getCookie(url);
+//                if(cookies!=null && cookies.contains(getResources().getString(R.string.lang))) {
+//                    setLocale("en");
+//                }else {
+//                    setLocale("bn");
+//                }
+//
+//                Log.d("Cookies","sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes) :"+sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)));
+//                Log.d("Cookies","sharedPref.getString(getResources().getString(R.string.saveCookies), \"\"):"+sharedPref.getString(getResources().getString(R.string.saveCookies), ""));
+//                  if(sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)).compareTo(getResources().getString(R.string.yes))==0
+//                          && sharedPref.getString(getResources().getString(R.string.saveCookies), "").compareTo("")==0){
+//
+//                    if(cookies!=null && cookies.contains(getResources().getString(R.string.authorization))) {
+//                        openDialog();
+//                    }
+//                }
 
             }
 
@@ -257,7 +290,7 @@ public class MainActivity extends AppCompatActivity{
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
                 // open rest of URLS in default browser
-                if(!url.contains(getResources().getString(R.string.project_url))) {
+                if(!url.contains(API.APP_URL)) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(intent);
                     return true;
@@ -268,7 +301,17 @@ public class MainActivity extends AppCompatActivity{
         });
 
         if(isNetworkAvailable()) {
-            webview.loadUrl(url);
+
+           if(url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL) && isLoginRequest) {
+//               String postData = "a=0&password=123qw&username=01847280724";
+               String postData = "a=0&"+"password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile();
+               webview.postUrl(
+                       "http://www.grs.gov.bd/login",
+                       EncodingUtils.getBytes(postData, "BASE64"));
+           }else {
+               webview.loadUrl(url);
+           }
+
         }
         else{
             showError();
@@ -367,11 +410,15 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        if(webview.copyBackForwardList().getCurrentIndex() > 0){
-            webview.goBack();
-        }
-        else {
-            super.onBackPressed();
+        if(latestUrl.compareTo(API.DASHBOARD_TAG_URL)==0) {
+            showAlertDialog();
+        }else {
+            if (webview.copyBackForwardList().getCurrentIndex() > 0) {
+                webview.goBack();
+            } else {
+                super.onBackPressed();
+            }
+
         }
     }
 
@@ -411,4 +458,60 @@ public class MainActivity extends AppCompatActivity{
         }
         webview.getSettings().setJavaScriptEnabled(true);
     }
+
+
+
+  private void showAlertDialog(){
+      AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
+              MainActivity.this);
+
+// Setting Dialog Title
+      alertDialog2.setTitle("Choose your selection");
+
+// Setting Dialog Message
+    //  alertDialog2.setMessage("Are you sure you want delete this file?");
+
+// Setting Icon to Dialog
+   //   alertDialog2.setIcon(R.drawable.delete);
+
+// Setting Positive "Yes" Btn
+      alertDialog2.setNeutralButton("Keep Logged in ?",
+              new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+                      // Write your code here to execute after dialog
+//                      Toast.makeText(getApplicationContext(),
+//                              "You clicked on Keep me Login", Toast.LENGTH_SHORT)
+//                              .show();
+                      finish();
+                  }
+              });
+      // Setting Positive "Yes" Btn
+      alertDialog2.setPositiveButton("Log out ?",
+              new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+                      // Write your code here to execute after dialog
+//                      Toast.makeText(getApplicationContext(),
+//                              "You clicked on Log out", Toast.LENGTH_SHORT)
+//                              .show();
+                      userStatus.setUser_password("");
+                      userStatus.setUser_mobile("");
+                      finish();
+                  }
+              });
+// Setting Negative "NO" Btn
+      alertDialog2.setNegativeButton("Cancel",
+              new DialogInterface.OnClickListener() {
+                  public void onClick(DialogInterface dialog, int which) {
+                      // Write your code here to execute after dialog
+//                      Toast.makeText(getApplicationContext(),
+//                              "You clicked on Cancel", Toast.LENGTH_SHORT)
+//                              .show();
+                      dialog.cancel();
+                  }
+              });
+
+// Showing Alert Dialog
+      alertDialog2.show();
+
+  }
 }

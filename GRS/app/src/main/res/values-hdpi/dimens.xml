@@ -66,7 +66,7 @@
     <dimen name="check_box_text_size">16sp</dimen>
     <dimen name="page_header_bangla_text">20sp</dimen>
     <dimen name="page_header_english_text">18sp</dimen>
-    <dimen name="usernamePassword_text">22sp</dimen>
+    <dimen name="usernamePassword_text">16sp</dimen>
     <dimen name="sign_up_text">18sp</dimen>
     <dimen name="about_page_text">15sp</dimen>
 
@@ -86,8 +86,7 @@
 
     <dimen name="seat_layout_side_margin">10dip</dimen>
     <dimen name="seat_padding">3dip</dimen>
-
-    <dimen name="forget_password_margin">18dp</dimen>
-    <dimen name="grs_image_top_margin">18dp</dimen>
-    <dimen name="button_margin_top">8dp</dimen>
+    <dimen name="forget_password_margin">12dp</dimen>
+    <dimen name="grs_image_top_margin">12dp</dimen>
+    <dimen name="button_margin_top">0dp</dimen>
 </resources>

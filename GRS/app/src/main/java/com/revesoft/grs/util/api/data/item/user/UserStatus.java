@@ -9,6 +9,7 @@ public class UserStatus {
     private String user_id;
     private String user_full_name;
     private String user_mobile;
+    private String password;
     private boolean isLogin;
 
     private Context context;
@@ -49,6 +50,16 @@ public class UserStatus {
     public void setUser_mobile(String user_mobile) {
       //  this.user_mobile = user_mobile;
         mPrefs.edit().putString("user_mobile", user_mobile).commit();
+    }
+
+    public String getUser_password() {
+        return mPrefs.getString("user_password", "");
+
+    }
+
+    public void setUser_password(String user_password) {
+        //  this.user_mobile = user_mobile;
+        mPrefs.edit().putString("user_password", user_password).commit();
     }
 
     public boolean isLogin() {

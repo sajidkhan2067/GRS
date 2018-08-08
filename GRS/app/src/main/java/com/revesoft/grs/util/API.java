@@ -3,73 +3,41 @@ package com.revesoft.grs.util;
 import com.android.volley.Request;
 
 /**
- * Created by sajid on 11/2/2015.
+ * Created by sajid on 5/5/2018.
  */
 public interface API {
 
 //    TypedArray a = getApp.obtainStyledAttributes(attrs, R.styleable.BuildType);
-    String SHOHOZ_API_URL = new CheckBaseURL().URL();
-//        String SHOHOZ_API_URL = "http://mapi9.shohoz.com";
-//        String SHOHOZ_API_URL = "http://mapi.saltchilli.com";
-    String SHOHOZ_API_VERSION = "v1.0";
-    String RECENT_SEARCH_API_TAG = "recent-searches";
-    String SEARCH_TRIPS_API_TAG = "search-trips";
-    String SEAT_LAYOUT_API_TAG = "seat-layout";
-    String HANDSHAKE_API_TAG = "handshake";
-    String BOOK_TRIP_API_TAG = "book-trip";
-    String RELEASE_SEAT_API_TAG = "release-seat";
-    String RESERVE_SEAT_API_TAG = "reserve-seat";
-    String BKASH_VERIFICATION_API_TAG = "verify-bkash-transaction";
-    String COUPON_VERIFICATION_API_TAG = "redeem-coupon";
-    String GCM_REGISTRATION_API_TAG = "register-gcm-client";
-    String TRIP_UPCOMING_API_TAG = "trips/upcoming";
-    String TRIP_PAST_API_TAG = "trips/past";
-    String PAYMENT_SUCCESS_API_TAG="payment-success";
-    String PAYMENT_FAILURE_API_TAG="payment-failure";
-    String TRIP_CANCELLED_API_TAG  = "trips/cancelled";
-    String USERS_TAG = "users";
-    String USER_REGISTRATION_API_TAG = "users/register";
-    String USER_LOGIN_API_TAG = "users/verify";
-    String DISCOUNT_API_TAG = "preview-discount";
-    String SEARCH_TICKET_API_TAG = "search-ticket";
-    String TICKET_WINNING_API_TAG = "pick-hourly-winner";
+    String APP_URL = new CheckBaseURL().URL();
+
+    String DASHBOARD_TAG = "viewGrievances.do";
+    String SIGN_UP_TAG = "register.do";
+    String FORGOT_PASSWORD_TAG = "api/citizen/reset/pincode/";
+    String COMPLAINANT_SIGN_IN_TAG = "login?a=0";
+    String COMPLAINANT_SIGN_IN_SUCCESS_TAG = "login/success";
+    String COMPLAINANT_SIGN_IN_FAILURE_TAG = "login?a=0&error";
+    String COMPLAINANT_LOG_OUT_TAG = "logout";
+    String ADMIN_SIGN_IN_TAG = "login?a=0";
+    String ADMIN_LOG_OUT_TAG = "ssologout";
 
 
 
-    String HANDSHAKE_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + HANDSHAKE_API_TAG;
+    String SIGN_UP_TAG_URL = APP_URL + "/"  + SIGN_UP_TAG;
 
-    String RECENT_SEARCH_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + RECENT_SEARCH_API_TAG;
+    String FORGOT_PASSWORD_TAG_URL = APP_URL + "/"  + FORGOT_PASSWORD_TAG;
 
-    String SEARCH_TRIPS_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + SEARCH_TRIPS_API_TAG;
+    String COMPLAINANT_SIGN_IN_TAG_URL = APP_URL + "/"  + COMPLAINANT_SIGN_IN_TAG;
 
-    String SEAT_LAYOUT_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + SEAT_LAYOUT_API_TAG;
+    String COMPLAINANT_LOG_OUT_TAG_URL = APP_URL + "/"  + COMPLAINANT_LOG_OUT_TAG;
 
-    String RESERVE_SEAT_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + RESERVE_SEAT_API_TAG;
+    String  ADMIN_SIGN_IN_TAG_URL = APP_URL + "/"  + ADMIN_SIGN_IN_TAG;
 
-    String RELEASE_SEAT_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + RELEASE_SEAT_API_TAG;
+    String COMPLAINANT_SIGN_IN_SUCCESS_TAG_URL = APP_URL + "/"  + COMPLAINANT_SIGN_IN_SUCCESS_TAG;
 
-    String BOOK_TRIP_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + BOOK_TRIP_API_TAG;
+    String  COMPLAINANT_SIGN_IN_FAILURE_TAG_URL = APP_URL + "/"  + COMPLAINANT_SIGN_IN_FAILURE_TAG;
 
-    String BKASH_VERIFICATION_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + BKASH_VERIFICATION_API_TAG;
+    String  DASHBOARD_TAG_URL = APP_URL + "/"  + DASHBOARD_TAG;
 
-    String COUPON_VERIFICATION_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + COUPON_VERIFICATION_API_TAG;
-
-    String GCM_REGISTRATION_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + GCM_REGISTRATION_API_TAG;
-
-    String TRIP_DETAILS_HISTORY_BASE_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + USERS_TAG;
-
-    String USER_REGISTRATION_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + USER_REGISTRATION_API_TAG;
-    String PAYMENT_SUCCESS_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + PAYMENT_SUCCESS_API_TAG;
-
-    String PAYMENT_FAILURE_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + PAYMENT_FAILURE_API_TAG;
-
-    String USER_LOGIN_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + USER_LOGIN_API_TAG;
-
-    String DISCOUNT_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + DISCOUNT_API_TAG;
-
-    String SEARCH_TICKET_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + SEARCH_TICKET_API_TAG;
-
-    String TICKET_WINNING_API_URL = SHOHOZ_API_URL + "/" + SHOHOZ_API_VERSION + "/" + TICKET_WINNING_API_TAG;
 
     interface Method {
         int RECENT_SEARCH_API_METHOD = Request.Method.GET;

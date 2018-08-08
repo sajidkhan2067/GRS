@@ -6,11 +6,14 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,11 +34,13 @@ import com.revesoft.grs.api.data.item.Login.LoginVerification;
 import com.revesoft.grs.application.AppController;
 import com.revesoft.grs.util.API;
 import com.revesoft.grs.util.AppManager;
+import com.revesoft.grs.util.Constant;
 import com.revesoft.grs.util.GetUrlBuilder;
 import com.revesoft.grs.util.ObjectRequest;
 import com.revesoft.grs.util.api.data.item.user.UserStatus;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static android.support.design.widget.Snackbar.make;
@@ -54,14 +59,15 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
     private static final String VALID_MOBILE_REG_EX = "^01(1|5|6|7|8|9)\\d{8}$";
     // UI references.
     private EditText mobileNumberEditText;
+    private TextView signUpText;
 
 
-    private LinearLayout shohozSignInButton;
+    private LinearLayout complainant_sign_in_button,admin_sign_in_button;
     private Button signUpActivityTransferButton;
     private ImageButton backButton;
 
     private ProgressBar loginProgressBar;
-    private View shohozLoginForm;
+    private View loginForm;
     private AppManager appManager;
     private String mobile,password;
     ObjectRequest<LoginVerification> loginVerificationObjectRequest;
@@ -71,12 +77,16 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
     protected AlertDialog progressBarDialog;
     private AppController appController = AppController.getInstance();
     int timeoutCounter = 0;
+    UserStatus userStatus;
+    String message;
 //    private Validator loginValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate(Bundle savedInstanceState)");
         super.onCreate(savedInstanceState);
+        userStatus = new UserStatus(LoginActivity.this);
+        setLocale("bn");
         setContentView(R.layout.activity_login);
 
         initializeUIViews();
@@ -86,28 +96,39 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         // Obtain the shared Tracker instance.
      //   AppController application = (AppController) getApplication();
         appManager = new AppManager(this);
+
+        if(userStatus.getUser_mobile().compareTo("")!=0){
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            intent.putExtra(Constant.url, API.COMPLAINANT_SIGN_IN_TAG_URL);
+            startActivity(intent);
+            finish();
+        }else {
+            Intent intent = getIntent();
+            if (intent != null) {
+                message = intent.getStringExtra(Constant.message);
+                if (message != null && message.length() != 0)
+                    snackbarMessages(message);
+
+            }
+        }
     }
 
     private void initializeButtonListeners() {
         Log.d(TAG, "initializeButtonListeners()");
-//        shohozSignInButton.setOnClickListener(this);
- //       signUpActivityTransferButton.setOnClickListener(this);
-//        backButton.setOnClickListener(this);
+        signUpText.setOnClickListener(this);
+        complainant_sign_in_button.setOnClickListener(this);
+        admin_sign_in_button.setOnClickListener(this);
     }
 
     private void initializeUIViews() {
         Log.d(TAG, "initializeUIViews()");
+        signUpText= (TextView) findViewById(R.id.signUpText);
+        complainant_sign_in_button= (LinearLayout) findViewById(R.id.complainant_sign_in_button);
+        admin_sign_in_button= (LinearLayout) findViewById(R.id.admin_sign_in_button);
         mobileNumberEditText = (EditText) findViewById(R.id.mobile_number_edit_text);
         passwordEditText = (EditText) findViewById(R.id.password_edit_text);
-//        shohozSignInButton = (LinearLayout) findViewById(R.id.shohoz_sign_in_button);
-//        backButton=(ImageButton) findViewById(R.id.back_button);
-//        signUpActivityTransferButton = (Button) findViewById(R.id.sign_up_activity_transfer_button);
-//        loginProgressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
-//        shohozLoginForm = findViewById(R.id.shohoz_login_form);
-//        createAlertDialog();
-//        signUpActivityTransferButton = (Button) findViewById(R.id.sign_up_activity_transfer_button);
-//        loginProgressBar = (ProgressBar) findViewById(R.id.login_progress_bar);
- //       shohozLoginForm = findViewById(R.id.shohoz_login_form);
+        createAlertDialog();
+
         createProgressDialogView();
     }
     /**
@@ -122,12 +143,12 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_longAnimTime);
 
-            shohozLoginForm.setVisibility(show ? View.GONE : View.VISIBLE);
-            shohozLoginForm.animate().setDuration(shortAnimTime).alpha(
+            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+            loginForm.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    shohozLoginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+                    loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -143,36 +164,66 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             loginProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            shohozLoginForm.setVisibility(show ? View.GONE : View.VISIBLE);
+            loginForm.setVisibility(show ? View.GONE : View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+        showAlertDialog();
     }
 
     @Override
     public void onClick(View view) {
         Log.d(TAG, "onClick(View view)");
         switch (view.getId()) {
-//            case R.id.shohoz_sign_in_button:
-//                Log.d(TAG, "Log In Button Pressed.");
-//                if (!checkEmpty(mobileNumberEditText)) {
-//                    Toast.makeText(LoginActivity.this, "Enter your mobile number.", Toast.LENGTH_SHORT).show();
-//                } else if (!checkEmpty(passwordEditText)) {
-//                    Toast.makeText(LoginActivity.this, "Enter your password.", Toast.LENGTH_SHORT).show();
-//                } else if (!mobileNumberEditText.getText().toString().trim().matches(VALID_MOBILE_REG_EX)) {
-//                    Toast.makeText(LoginActivity.this, "Enter a valid mobile number.", LENGTH_SHORT).show();
-//                }else if (checkEmpty(mobileNumberEditText) && checkEmpty(passwordEditText)) {
-//                   // loginValidator.validate();
-//                }
-//                break;
-//            case R.id.sign_up_activity_transfer_button:
-//                Log.d(TAG, "Sign Up Activity Transfer Button Pressed.");
-//              //  startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
-//                finish();
-//                break;
+            case R.id.complainant_sign_in_button:
+                Log.d(TAG, "Log In Button Pressed.");
+                if (!checkEmpty(mobileNumberEditText)) {
+                    snackbarMessages("Enter your mobile number.");
+                   // Toast.makeText(LoginActivity.this, "Enter your mobile number.", Toast.LENGTH_SHORT).show();
+                } else if (!checkEmpty(passwordEditText)) {
+                    snackbarMessages("Enter your password.");
+                   // Toast.makeText(LoginActivity.this, "Enter your password.", Toast.LENGTH_SHORT).show();
+                } else if (!mobileNumberEditText.getText().toString().trim().matches(VALID_MOBILE_REG_EX)) {
+                    snackbarMessages("Enter a valid mobile number.");
+                   // Toast.makeText(LoginActivity.this, "Enter a valid mobile number.", LENGTH_SHORT).show();
+                }else if (checkEmpty(mobileNumberEditText) && checkEmpty(passwordEditText)) {
+
+                    userStatus.setUser_mobile(mobileNumberEditText.getText().toString().trim());
+                    userStatus.setUser_password(passwordEditText.getText().toString().trim());
+                    Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                    intent.putExtra(Constant.url, API.COMPLAINANT_SIGN_IN_TAG_URL);
+                    startActivity(intent);
+                    finish();
+                }
+                break;
+            case R.id.admin_sign_in_button:
+                Log.d(TAG, "Sign Up Activity Transfer Button Pressed.");
+              //  startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+                snackbarMessages("Working on it");
+                break;
 //            case R.id.back_button:
 //                Log.d(TAG, "back button Pressed.");
 //                finish();
 //                break;
+            case R.id.signUpText:
+                Log.d(TAG, "Sign Up Activity Transfer Button Pressed.");
+                Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                intent.putExtra(Constant.url, API.SIGN_UP_TAG_URL);
+                startActivity(intent);
+
+                finish();
+                break;
         }
+    }
+
+    private void snackbarMessages(String messages){
+        Snackbar snackbar = Snackbar
+                .make(complainant_sign_in_button, messages, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
     }
 
     private boolean checkEmpty(EditText editText) {
@@ -260,7 +311,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         params.put(API.Parameter.ANDROID_DEVICE_ID, appManager.getDeviceId());
         params.put(API.Parameter.ANDROID_APP_VERSION, appManager.getAppVersion());
 
-        GetUrlBuilder getUrlBuilder = new GetUrlBuilder(API.USER_LOGIN_API_URL, params);
+        GetUrlBuilder getUrlBuilder = new GetUrlBuilder(API.COMPLAINANT_SIGN_IN_TAG_URL, params);
         String Url = getUrlBuilder.getQueryUrl();
         Log.d(TAG, "URL:" + Url);
         Log.d(TAG, "PARAMS:" + params.toString());
@@ -285,7 +336,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
 //                    for (String m : response.getError().getMessages()) {
 //                        message += (m + "\n");
 //                    }
-                   // make(shohozLoginForm, message, Snackbar.LENGTH_SHORT).show();
+                   // make(loginForm, message, Snackbar.LENGTH_SHORT).show();
                 }
 
             }
@@ -314,13 +365,22 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
                 } catch (Exception e) {
                     message = "Something went wrong.Please Check your Internet Connection";
                 }
-                make(shohozLoginForm, message, Snackbar.LENGTH_SHORT).show();
+                make(loginForm, message, Snackbar.LENGTH_SHORT).show();
             }
         },LoginVerification.class);
 
         progressBarDialog.show();
         appController.addToRequestQueue(loginVerificationObjectRequest);
 
+    }
+
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
     }
 
     protected void createProgressDialogView() {
@@ -357,6 +417,48 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
 //        alertDialogBuilder.setTitle(R.string.error);
 //        alertDialogBuilder.setMessage(R.string.server_connection_fail);
         return alertDialogBuilder;
+    }
+
+    private void showAlertDialog(){
+        android.app.AlertDialog.Builder alertDialog2 = new android.app.AlertDialog.Builder(
+                LoginActivity.this);
+
+// Setting Dialog Title
+        alertDialog2.setTitle("Want to exit ?");
+
+// Setting Dialog Message
+        //  alertDialog2.setMessage("Are you sure you want delete this file?");
+
+// Setting Icon to Dialog
+        //   alertDialog2.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Btn
+        alertDialog2.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+//                      Toast.makeText(getApplicationContext(),
+//                              "You clicked on Log out", Toast.LENGTH_SHORT)
+//                              .show();
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+// Setting Negative "NO" Btn
+        alertDialog2.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+//                      Toast.makeText(getApplicationContext(),
+//                              "You clicked on Cancel", Toast.LENGTH_SHORT)
+//                              .show();
+                        dialog.cancel();
+                    }
+                });
+
+// Showing Alert Dialog
+        alertDialog2.show();
+
     }
 
 }

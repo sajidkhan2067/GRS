@@ -2,27 +2,23 @@
 <resources>
     <string name="app_name">অভিযোগ প্রতিকার ব্যবস্থা </string>
     <string name="short_detail">পরিকল্পনায় : এটুআই \nবাস্তবায়নে : রিভ সিস্টেমস</string>
-    <string name="project_url">http://103.48.18.9/</string>
-    <string name="project_login_success_url">http://103.48.18.9/login/success</string>
-    <string name="project_login_url"> http://idp.doptor.gov.bd/</string>
-    <string name="db_name">user_db</string>
-    <string name="saveCookies">saveCookies</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
-    <string name="dialog_yes">yes</string>
-    <string name="dialog_no">no</string>
-    <string name="logged_in">logged_in</string>
-    <string name="authorization">Authorization</string>
+    <string name="dialog_yes">হ্যাঁ</string>
+    <string name="dialog_no">না</string>
     <string name="dicided">dicided</string>
-    <string name="save_signin">"Save sign-in information ?"</string>
+    <string name="save_signin">"সাইন ইন তথ্য সংরক্ষণ করুন?"</string>
     <string name="lang">"lang=en"</string>
-    <string name="no_internet_title">"No internet Connection!"</string>
-    <string name="no_internet_message">"Please connect to Internet !"</string>
-    <string name="username">"Username"</string>
-    <string name="password">"Password"</string>
-    <string name="forgot_password">"Forgot Password"</string>
-    <string name="action_complainant_sign_in">"Complainant Login"</string>
-    <string name="action_admin_sign_in">"Administrative Login"</string>
-    <string name="no_account">"Don't have an account?"</string>
-    <string name="action_sign_up">"Sign Up"</string>
+    <string name="no_internet_title">"ইন্টারনেট সংযোগ নেই!"</string>
+    <string name="no_internet_message">"ইন্টারনেট সংযোগ করুন!"</string>
+    <string name="forgot_password">"পাসওয়ার্ড ভুলে গেছেন"</string>
+    <string name="action_complainant_sign_in">"অভিযোগকারী লগইন"</string>
+    <string name="action_admin_sign_in">"প্রশাসনিক লগইন"</string>
+    <string name="no_account">"অ্যাকাউন্ট নেই ?"</string>
+    <string name="action_sign_up">"নিবন্ধন করুন"</string>
+    <string name="username">"মোবাইল নম্বর"</string>
+    <string name="password">"পিন"</string>
+    <string name="valid_username_pass">দয়া করে একটি বৈধ ব্যবহারকারী নাম বা পাসওয়ার্ড লিখুন</string>
+    <string name="logout_success">লগ আউট সফল</string>
+
 </resources>
