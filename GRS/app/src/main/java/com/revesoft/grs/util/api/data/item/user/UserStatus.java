@@ -6,7 +6,7 @@ import android.preference.PreferenceManager;
 
 public class UserStatus {
 
-    private String user_id;
+    private String user_id;  //0=complainant, 1=admin
     private String user_full_name;
     private String user_mobile;
     private String password;

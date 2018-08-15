@@ -10,15 +10,18 @@ public interface API {
 //    TypedArray a = getApp.obtainStyledAttributes(attrs, R.styleable.BuildType);
     String APP_URL = new CheckBaseURL().URL();
 
-    String DASHBOARD_TAG = "viewGrievances.do";
+    String COMPLAINANT_DASHBOARD_TAG = "viewGrievances.do";
+    String ADMIN_DASHBOARD_TAG = "viewMyGrievances.do";
     String SIGN_UP_TAG = "register.do";
     String FORGOT_PASSWORD_TAG = "api/citizen/reset/pincode/";
     String COMPLAINANT_SIGN_IN_TAG = "login?a=0";
     String COMPLAINANT_SIGN_IN_SUCCESS_TAG = "login/success";
     String COMPLAINANT_SIGN_IN_FAILURE_TAG = "login?a=0&error";
     String COMPLAINANT_LOG_OUT_TAG = "logout";
-    String ADMIN_SIGN_IN_TAG = "login?a=0";
+    String ADMIN_SIGN_IN_TAG = "mobile-login";
     String ADMIN_LOG_OUT_TAG = "ssologout";
+    String ADMIN_SIGN_IN_SUCCESS_TAG = "login/success";
+    String ADMIN_SIGN_IN_FAILURE_TAG = "login?a=1";
 
 
 
@@ -36,11 +39,19 @@ public interface API {
 
     String  COMPLAINANT_SIGN_IN_FAILURE_TAG_URL = APP_URL + "/"  + COMPLAINANT_SIGN_IN_FAILURE_TAG;
 
-    String  DASHBOARD_TAG_URL = APP_URL + "/"  + DASHBOARD_TAG;
+    String  COMPLAINANT_DASHBOARD_TAG_URL = APP_URL + "/"  + COMPLAINANT_DASHBOARD_TAG;
+
+    String  ADMIN_DASHBOARD_TAG_URL = APP_URL + "/"  + ADMIN_DASHBOARD_TAG;
+
+    String ADMIN_SIGN_IN_SUCCESS_TAG_URL = APP_URL + "/"  + ADMIN_SIGN_IN_SUCCESS_TAG;
+
+    String ADMIN_SIGN_IN_FAILURE_TAG_URL = APP_URL + "/"  + ADMIN_SIGN_IN_FAILURE_TAG;
+
+    String ADMIN_LOG_OUT_TAG_URL = APP_URL + "/"  + ADMIN_LOG_OUT_TAG;
 
 
     interface Method {
-        int RECENT_SEARCH_API_METHOD = Request.Method.GET;
+        int PUT_API_METHOD = Request.Method.PUT;
         int SEARCH_TRIPS_API_METHOD = Request.Method.GET;
         int SEAT_LAYOUT_API_METHOD = Request.Method.GET;
         int HANDSHAKE_API_METHOD = Request.Method.POST;

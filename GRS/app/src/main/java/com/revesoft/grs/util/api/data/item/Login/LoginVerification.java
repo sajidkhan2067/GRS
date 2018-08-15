@@ -1,4 +1,4 @@
-package com.revesoft.grs.api.data.item.Login;
+package com.revesoft.grs.util.api.data.item.Login;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -8,62 +8,39 @@ import com.google.gson.annotations.SerializedName;
 public class LoginVerification {
 
     @SerializedName("data")
-    private com.revesoft.grs.api.data.item.Login.LoginVerificationData data;
+    private LoginVerificationData data;
 
-    @SerializedName("error")
-    private Error error;
+//    @SerializedName("error")
+//    private Error error;
 
     public LoginVerification() {
     }
 
-    public LoginVerification(com.revesoft.grs.api.data.item.Login.LoginVerificationData data, Error error) {
+    public LoginVerification(LoginVerificationData data, Error error) {
 
         this.data = data;
-        this.error = error;
+      //  this.error = error;
     }
 
-    public com.revesoft.grs.api.data.item.Login.LoginVerificationData getData() {
+    public LoginVerificationData getData() {
 
         return data;
     }
 
-    public void setData(com.revesoft.grs.api.data.item.Login.LoginVerificationData data) {
+    public void setData(LoginVerificationData data) {
         this.data = data;
     }
 
-    public Error getError() {
-        return error;
-    }
+//    public Error getError() {
+//        return error;
+//    }
+//
+//    public void setError(Error error) {
+//        this.error = error;
+//    }
 
-    public void setError(Error error) {
-        this.error = error;
-    }
 
-    @Override
-    public boolean equals(Object o) {
 
-        if (this == o) return true;
-        if (!(o instanceof LoginVerification)) return false;
 
-        LoginVerification that = (LoginVerification) o;
 
-        if (!data.equals(that.data)) return false;
-        return error.equals(that.error);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = data.hashCode();
-        result = 31 * result + error.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "LoginVerification" +
-                "data=" + data +
-                ", error=" + error +
-                '}';
-    }
 }

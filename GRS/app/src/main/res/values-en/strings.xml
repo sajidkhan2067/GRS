@@ -30,6 +30,15 @@
     <string name="keep_looged_in">Keep Logged in</string>
     <string name="log_out">Log out</string>
     <string name="cancel">Cancel</string>
+    <string name="previous_page">Previous page</string>
+    <string name="submit">Submit</string>
+
+    <string name="action_settings">Choose your selection</string>
+    <string name="try_again">Keep Logged in</string>
+    <string name="close_app">Log out</string>
+    <string name="error">Cancel</string>
+    <string name="no_internet_connection">Previous page</string>
+    <string name="server_connection_fail">Submit</string>
 
 
 </resources>

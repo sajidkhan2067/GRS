@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = getIntent();
         if (intent!=null) {
              url = intent.getStringExtra(Constant.url);
-             if(url.compareTo(API.COMPLAINANT_SIGN_IN_TAG_URL)==0){
+             if(url.compareTo(API.COMPLAINANT_SIGN_IN_TAG_URL)==0 || url.compareTo(API.ADMIN_SIGN_IN_TAG_URL)==0){
                  isLoginRequest=true;
              }
 
@@ -241,13 +241,15 @@ public class MainActivity extends AppCompatActivity{
                 super.onPageStarted(view, url, favicon);
                 latestUrl=url;
                 Log.d("Cookies","onPageStarted :"+url);
-               if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL ) || (url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL)&& !isLoginRequest) ){
+               if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL )
+                       || (url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL)&& !isLoginRequest) || (url.contains(API.ADMIN_SIGN_IN_TAG_URL)&& !isLoginRequest)){
                    userStatus.setUser_password("");
                    userStatus.setUser_mobile("");
+                   userStatus.setUser_id("");
                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
-                   if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL)) {
+                   if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) ||  url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL)) {
                        intent.putExtra(Constant.message, getResources().getString(R.string.valid_username_pass));
-                   }else  if( url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL)) {
+                   }else  if( url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL) || url.contains(API.ADMIN_LOG_OUT_TAG_URL)) {
                        intent.putExtra(Constant.message, getResources().getString(R.string.logout_success));
                    }
                    startActivity(intent);
@@ -303,10 +305,14 @@ public class MainActivity extends AppCompatActivity{
         if(isNetworkAvailable()) {
 
            if(url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL) && isLoginRequest) {
-//               String postData = "a=0&password=123qw&username=01847280724";
-               String postData = "a=0&"+"password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile();
+               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile();
                webview.postUrl(
-                       "http://www.grs.gov.bd/login",
+                       API.COMPLAINANT_SIGN_IN_TAG_URL,
+                       EncodingUtils.getBytes(postData, "BASE64"));
+           }else if(url.contains(API.ADMIN_SIGN_IN_TAG_URL) && isLoginRequest){
+               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile();
+               webview.postUrl(
+                       API.ADMIN_SIGN_IN_TAG_URL,
                        EncodingUtils.getBytes(postData, "BASE64"));
            }else {
                webview.loadUrl(url);
@@ -410,13 +416,14 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
-        if(latestUrl.compareTo(API.DASHBOARD_TAG_URL)==0) {
+        if(latestUrl.compareTo(API.ADMIN_DASHBOARD_TAG_URL)==0 || latestUrl.compareTo(API.COMPLAINANT_DASHBOARD_TAG_URL)==0) {
             showAlertDialog();
-        }else {
+        }else{
             if (webview.copyBackForwardList().getCurrentIndex() > 0) {
                 webview.goBack();
             } else {
-                super.onBackPressed();
+//                super.onBackPressed();
+                showAlertDialogShort();
             }
 
         }
@@ -429,6 +436,48 @@ public class MainActivity extends AppCompatActivity{
         }else {
             return false;
         }
+    }
+
+    private void showAlertDialogShort(){
+        android.app.AlertDialog.Builder alertDialog2 = new android.app.AlertDialog.Builder(
+                MainActivity.this);
+
+// Setting Dialog Title
+        alertDialog2.setTitle(getResources().getString(R.string.prompt_exit));
+
+// Setting Dialog Message
+        //  alertDialog2.setMessage("Are you sure you want delete this file?");
+
+// Setting Icon to Dialog
+        //   alertDialog2.setIcon(R.drawable.delete);
+
+        // Setting Positive "Yes" Btn
+        alertDialog2.setPositiveButton(getResources().getString(R.string.dialog_yes),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+//                      Toast.makeText(getApplicationContext(),
+//                              "You clicked on Log out", Toast.LENGTH_SHORT)
+//                              .show();
+                        dialog.cancel();
+                        finish();
+                    }
+                });
+// Setting Negative "NO" Btn
+        alertDialog2.setNegativeButton(getResources().getString(R.string.dialog_no),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+//                      Toast.makeText(getApplicationContext(),
+//                              "You clicked on Cancel", Toast.LENGTH_SHORT)
+//                              .show();
+                        dialog.cancel();
+                    }
+                });
+
+// Showing Alert Dialog
+        alertDialog2.show();
+
     }
 
     private boolean isNetworkAvailable() {
@@ -495,6 +544,7 @@ public class MainActivity extends AppCompatActivity{
 //                              .show();
                       userStatus.setUser_password("");
                       userStatus.setUser_mobile("");
+                      userStatus.setUser_id("");
                       finish();
                   }
               });

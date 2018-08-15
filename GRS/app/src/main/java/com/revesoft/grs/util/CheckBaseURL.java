@@ -10,7 +10,7 @@ public class CheckBaseURL {
             BASE_URL = "http://www.grs.gov.bd";
         }
         else {
-            BASE_URL = "http://www.grs.gov.bd";
+            BASE_URL = "103.48.18.9:81";
         }
         return BASE_URL;
     }
