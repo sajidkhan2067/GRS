@@ -348,23 +348,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
             public void onResponse(LoginVerification response) {
                 progressBarDialog.cancel();
 
-                if (response.getData()!= null) {
-                    UserStatus userStatus=new UserStatus(LoginActivity.this);
-                    userStatus.setLogin(true);
-                  //  userStatus.setUser_id(response.getData().getUser_id());
-                  //  userStatus.setUser_full_name(response.getData().getFirst_name()+" "+response.getData().getLast_name());
-                  //  userStatus.setUser_mobile(response.getData().getMobile_number());
-                    Toast.makeText(LoginActivity.this, "Logged In successfully.", LENGTH_SHORT).show();
-                    finish();
 
-                } else {
-
-//                    String message = "";
-//                    for (String m : response.getError().getMessages()) {
-//                        message += (m + "\n");
-//                    }
-                   // make(loginForm, message, Snackbar.LENGTH_SHORT).show();
-                }
 
             }
         }, new Response.ErrorListener() {

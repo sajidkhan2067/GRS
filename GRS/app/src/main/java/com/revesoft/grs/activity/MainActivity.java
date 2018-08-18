@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity{
                 latestUrl=url;
                 Log.d("Cookies","onPageStarted :"+url);
                if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL )
-                       || (url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL)&& !isLoginRequest) || (url.contains(API.ADMIN_SIGN_IN_TAG_URL)&& !isLoginRequest)){
+                       || url.contains(API.ADMIN_LOG_OUT_TAG_URL)   || (url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL)&& !isLoginRequest) || (url.contains(API.ADMIN_SIGN_IN_TAG_URL)&& !isLoginRequest)){
                    userStatus.setUser_password("");
                    userStatus.setUser_mobile("");
                    userStatus.setUser_id("");

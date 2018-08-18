@@ -3,11 +3,13 @@ package com.revesoft.grs.activity;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -17,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -189,25 +192,22 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
                     finish();
                 break;
             case R.id.admin_sign_in_button:
-                snackbarMessages("Working on it");
-//                Log.d(TAG, "Log In Button Pressed.");
-//                if (!checkEmpty(mobileNumberEditText)) {
-//                    snackbarMessages(getResources().getString(R.string.empty_username));
-//                } else if (!mobileNumberEditText.getText().toString().trim().matches(VALID_MOBILE_REG_EX)) {
-//                    snackbarMessages(getResources().getString(R.string.valid_username_pass));
-//                    // Toast.makeText(LoginActivity.this, "Enter a valid mobile number.", LENGTH_SHORT).show();
-//                }else if (checkEmpty(mobileNumberEditText)) {
-////                    intent = new Intent(PinChangeActivity.this,MainActivity.class);
-////                    intent.putExtra(Constant.url, API.COMPLAINANT_SIGN_IN_TAG_URL);
-////                    startActivity(intent);
-////                    finish();
-//                    if(appManager.isNetworkAvailable()) {
-//                        userLogin(mobileNumberEditText.getText().toString().trim());
-//                    }else {
-//                        noInternetAlertDialog.show();
-//                    }
-//                }
-//                break;
+                InputMethodManager imm = (InputMethodManager) PinChangeActivity.this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                Log.d(TAG, "Log In Button Pressed.");
+                if (!checkEmpty(mobileNumberEditText)) {
+                    snackbarMessages(getResources().getString(R.string.empty_username));
+                } else if (!mobileNumberEditText.getText().toString().trim().matches(VALID_MOBILE_REG_EX)) {
+                    snackbarMessages(getResources().getString(R.string.valid_username_pass));
+                    // Toast.makeText(LoginActivity.this, "Enter a valid mobile number.", LENGTH_SHORT).show();
+                }else if (checkEmpty(mobileNumberEditText)) {
+                    if(appManager.isNetworkAvailable()) {
+                        userLogin(mobileNumberEditText.getText().toString().trim());
+                    }else {
+                        noInternetAlertDialog.show();
+                    }
+                }
+                break;
         }
     }
 
@@ -295,36 +295,36 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
         }
     }
 
-    private void userLogin (String password){
+    private void userLogin (String mobile){
         Map<String, String> params = new HashMap<>();
      //   params.put(API.Parameter.MOBILE_NUMBER,mobile);
-     //   params.put(API.Parameter.PASSWORD, password);
+     //   params.put(API.Parameter.PASSWORD, mobile);
      //   params.put(API.Parameter.ANDROID_DEVICE_ID, appManager.getDeviceId());
      //   params.put(API.Parameter.ANDROID_APP_VERSION, appManager.getAppVersion());
 
-        GetUrlBuilder getUrlBuilder = new GetUrlBuilder(API.COMPLAINANT_SIGN_IN_TAG_URL+"/"+password, params);
-        String Url = getUrlBuilder.getQueryUrl();
-        Log.d(TAG, "URL:" + Url);
-        Log.d(TAG, "PARAMS:" + params.toString());
-
-        loginVerificationObjectRequest = new ObjectRequest<>(API.Method.PUT_API_METHOD, Url, params, new Response.Listener<LoginVerification>() {
+//        GetUrlBuilder getUrlBuilder = new GetUrlBuilder(API.PIN_CHANGE_TAG_URL+"/"+mobile, params);
+//        String Url = getUrlBuilder.getQueryUrl();
+//        Log.d(TAG, "URL:" + Url);
+//        Log.d(TAG, "PARAMS:" + params.toString());
+        String Url = API.PIN_CHANGE_TAG_URL+"/"+mobile;
+        loginVerificationObjectRequest = new ObjectRequest<>(API.Method.PUT_API_METHOD, Url, new Response.Listener<LoginVerification>() {
             @Override
             public void onResponse(LoginVerification response) {
                 progressBarDialog.cancel();
+                make(previous_page_button, response.getMessage(), Snackbar.LENGTH_LONG).show();
+                if (response.isSuccess()) {
+                    Intent intent = new Intent(PinChangeActivity.this,LoginActivity.class);
+                    intent.putExtra(Constant.message, response.getMessage());
+                    startActivity(intent);
+                    finish();
 
-                if (response.getData().isSuccess()) {
-
-                    Toast.makeText(PinChangeActivity.this, "Logged In successfully.", LENGTH_SHORT).show();
-                   // finish();
-
-                } else {
-                    Toast.makeText(PinChangeActivity.this, "Error.", LENGTH_SHORT).show();
+                }
 //                    String message = "";
 //                    for (String m : response.getError().getMessages()) {
 //                        message += (m + "\n");
 //                    }
                     // make(loginForm, message, Snackbar.LENGTH_SHORT).show();
-                }
+              //  }
 
             }
         }, new Response.ErrorListener() {
@@ -353,7 +353,7 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
                 } catch (Exception e) {
                     message = "Something went wrong.Please Check your Internet Connection";
                 }
-                make(loginForm, message, Snackbar.LENGTH_SHORT).show();
+                make(previous_page_button, message, Snackbar.LENGTH_SHORT).show();
             }
         },LoginVerification.class);
 

@@ -21,7 +21,8 @@ public interface API {
     String ADMIN_SIGN_IN_TAG = "mobile-login";
     String ADMIN_LOG_OUT_TAG = "ssologout";
     String ADMIN_SIGN_IN_SUCCESS_TAG = "login/success";
-    String ADMIN_SIGN_IN_FAILURE_TAG = "login?a=1";
+    String ADMIN_SIGN_IN_FAILURE_TAG = "login?a=2";
+    String PIN_CHANGE_TAG = "api/citizen/reset/pincode";
 
 
 
@@ -48,6 +49,8 @@ public interface API {
     String ADMIN_SIGN_IN_FAILURE_TAG_URL = APP_URL + "/"  + ADMIN_SIGN_IN_FAILURE_TAG;
 
     String ADMIN_LOG_OUT_TAG_URL = APP_URL + "/"  + ADMIN_LOG_OUT_TAG;
+
+    String PIN_CHANGE_TAG_URL = APP_URL + "/"  + PIN_CHANGE_TAG;
 
 
     interface Method {

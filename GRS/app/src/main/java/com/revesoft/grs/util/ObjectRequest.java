@@ -107,14 +107,14 @@ public class ObjectRequest<T> extends Request<T> {
         return super.parseNetworkError(volleyError);
     }
 
-    @Override
-    public Map<String, String> getHeaders() throws AuthFailureError {
-        HashMap<String, String> params = new HashMap<String, String>();
-        String creds = String.format("%s:%s","guest","33615sua");
-        String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
-        params.put("Authorization", auth);
-        return params;
-    }
+//    @Override
+//    public Map<String, String> getHeaders() throws AuthFailureError {
+//        HashMap<String, String> params = new HashMap<String, String>();
+//        String creds = String.format("%s:%s","guest","33615sua");
+//        String auth = "Basic " + Base64.encodeToString(creds.getBytes(), Base64.DEFAULT);
+//        params.put("Authorization", auth);
+//        return params;
+//    }
 
     @Override
     public Map<String, String> getParams() throws AuthFailureError {

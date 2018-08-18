@@ -3,44 +3,33 @@ package com.revesoft.grs.util.api.data.item.Login;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by sajid on 12/14/2015.
+ * Created by sajid on 2/8/2018.
  */
 public class LoginVerification {
 
-    @SerializedName("data")
-    private LoginVerificationData data;
-
+    @SerializedName("success")
+    private boolean success;
+    @SerializedName("message")
+    private String message;
 //    @SerializedName("error")
 //    private Error error;
 
     public LoginVerification() {
     }
 
-    public LoginVerification(LoginVerificationData data, Error error) {
-
-        this.data = data;
-      //  this.error = error;
+    public boolean isSuccess() {
+        return success;
     }
 
-    public LoginVerificationData getData() {
-
-        return data;
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 
-    public void setData(LoginVerificationData data) {
-        this.data = data;
+    public String getMessage() {
+        return message;
     }
 
-//    public Error getError() {
-//        return error;
-//    }
-//
-//    public void setError(Error error) {
-//        this.error = error;
-//    }
-
-
-
-
-
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
