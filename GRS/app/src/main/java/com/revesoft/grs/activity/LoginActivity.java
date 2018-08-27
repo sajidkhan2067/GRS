@@ -295,7 +295,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
                     if (appManager.isNetworkAvailable()) {
                         noInternetAlertDialog.cancel();
                         noInternetAlertDialog.dismiss();
-                        userLogin(mobile,password);
+                       // userLogin(mobile,password);
                     } else {
                         noInternetAlertDialog.cancel();
                         noInternetAlertDialog = getNoInternetAlertDialogBuilder().create();
@@ -316,7 +316,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
             switch (which) {
                 case Dialog.BUTTON_POSITIVE:
                     Log.d(TAG, "errorAlertDialog Positive Button Pressed");
-                    userLogin(mobile,password);
+                  //  userLogin(mobile,password);
                     break;
                 case Dialog.BUTTON_NEUTRAL:
                     Log.d(TAG, "errorAlertDialog Neutral Button Pressed");
@@ -329,60 +329,6 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
                     break;
             }
         }
-    }
-
-    private void userLogin (String mobile, String password){
-        Map<String, String> params = new HashMap<>();
-        params.put(API.Parameter.MOBILE_NUMBER,mobile);
-        params.put(API.Parameter.PASSWORD, password);
-        params.put(API.Parameter.ANDROID_DEVICE_ID, appManager.getDeviceId());
-        params.put(API.Parameter.ANDROID_APP_VERSION, appManager.getAppVersion());
-
-        GetUrlBuilder getUrlBuilder = new GetUrlBuilder(API.COMPLAINANT_SIGN_IN_TAG_URL, params);
-        String Url = getUrlBuilder.getQueryUrl();
-        Log.d(TAG, "URL:" + Url);
-        Log.d(TAG, "PARAMS:" + params.toString());
-
-        loginVerificationObjectRequest = new ObjectRequest<>(API.Method.USER_lOGIN_API_METHOD, Url, params, new Response.Listener<LoginVerification>() {
-            @Override
-            public void onResponse(LoginVerification response) {
-                progressBarDialog.cancel();
-
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                try {
-                    Log.e(TAG, Integer.toString(error.networkResponse.statusCode));
-                } catch (Exception e) {
-                    if (timeoutCounter != 2) {
-                        timeoutCounter++;
-                        appController.addToRequestQueue(loginVerificationObjectRequest);
-                        return;
-                    } else {
-                        timeoutCounter = 0;
-                    }
-                }
-                progressBarDialog.cancel();
-                String message = "";
-                try {
-                    Gson gson = new GsonBuilder().create();
-                    LoginVerification response = gson.fromJson(new String(error.networkResponse.data, "UTF-8"), LoginVerification.class);
-//                    for (String m : response.getError().getMessages()) {
-//                        message += (m + "\n");
-//                    }
-                } catch (Exception e) {
-                    message = "Something went wrong.Please Check your Internet Connection";
-                }
-                make(loginForm, message, Snackbar.LENGTH_SHORT).show();
-            }
-        },LoginVerification.class);
-
-        progressBarDialog.show();
-        appController.addToRequestQueue(loginVerificationObjectRequest);
-
     }
 
     public void setLocale(String lang) {

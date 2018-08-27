@@ -457,12 +457,6 @@ public class MainActivity extends AppCompatActivity{
         editText.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
         webview.setVisibility(View.VISIBLE);
-//        if(url.compareTo(getResources().getString(R.string.project_url))==0){
-//              if(isNeededToClearCookies()){
-//                  clearCookies();
-//                  Log.d("Cookies","Clear cookies");
-//              }
-//        }
 
         ws.setJavaScriptEnabled(true);
         ws.setDomStorageEnabled(true);

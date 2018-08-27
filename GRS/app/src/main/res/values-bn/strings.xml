@@ -15,7 +15,7 @@
     <string name="lang">"lang=en"</string>
     <string name="no_internet_title">"ইন্টারনেট সংযোগ নেই!"</string>
     <string name="no_internet_message">"ইন্টারনেট সংযোগ করুন!"</string>
-    <string name="forgot_password">"পাসওয়ার্ড ভুলে গেছেন"</string>
+    <string name="forgot_password">"পাসওয়ার্ড ভুলে গেছেন"</string>৬
     <string name="action_complainant_sign_in">"অভিযোগকারী লগইন"</string>
     <string name="action_admin_sign_in">"প্রশাসনিক লগইন"</string>
     <string name="no_account">"অ্যাকাউন্ট নেই ?"</string>
@@ -29,7 +29,7 @@
     <string name="prompt_exit">প্রস্থান করতে চান?</string>
     <string name="choose_selection">আপনার নির্বাচনটি ঠিক করুন</string>
     <string name="keep_looged_in">লগ ইন রাখুন</string>
-    <string name="log_out">প্রস্থান</string>
+    <string name="log_out">লগ আউট</string>
     <string name="cancel">বাতিল</string>
     <string name="previous_page">আগের পেজ</string>
     <string name="submit">সাবমিট</string>
