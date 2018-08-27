@@ -82,8 +82,6 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
     int timeoutCounter = 0;
     UserStatus userStatus;
     String message;
-  //  AppController application;
-//    private Validator loginValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,10 +93,7 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
 
         initializeUIViews();
         initializeButtonListeners();
-      //  loginValidator = new Validator(this);
-      //  loginValidator.setValidationListener(this);
-        // Obtain the shared Tracker instance.
-//        appController = (AppController) getApplication();
+
         appManager = new AppManager(this);
 
         if(userStatus.getUser_mobile().compareTo("")!=0 && userStatus.getUser_mobile().compareTo("0")==0){
@@ -221,33 +216,6 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
         Log.d(TAG, "checkEmpty(EditText editText)");
         return editText.getText().toString().trim().length() != 0;
     }
-//    @Override
-//    public void onValidationSucceeded() {
-//        Log.d(TAG, "onValidationSucceeded()");
-//        if (appManager.isNetworkAvailable()) {
-//            Log.d(TAG, "handshakeRequest done");
-//
-//            mobile = mobileNumberEditText.getText().toString().trim();
-//            password = passwordEditText.getText().toString().trim();
-//            userLogin(mobile,password);
-//
-//        } else {
-//
-//            noInternetAlertDialog.show();
-//
-//        }
-//
-//    }
-
-//    @Override
-//    public void onValidationFailed(List<ValidationError> errors) {
-//        Log.d(TAG, "onValidationFailed(List<ValidationError> errors) totalError = " + errors.size());
-//        for (ValidationError validationError : errors) {
-//            makeText(LoginActivity.this, validationError.getCollatedErrorMessage(LoginActivity.this),
-//                    LENGTH_SHORT).show();
-//            break;
-//        }
-//    }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
@@ -297,15 +265,6 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
 
     private void userLogin (String mobile){
         Map<String, String> params = new HashMap<>();
-     //   params.put(API.Parameter.MOBILE_NUMBER,mobile);
-     //   params.put(API.Parameter.PASSWORD, mobile);
-     //   params.put(API.Parameter.ANDROID_DEVICE_ID, appManager.getDeviceId());
-     //   params.put(API.Parameter.ANDROID_APP_VERSION, appManager.getAppVersion());
-
-//        GetUrlBuilder getUrlBuilder = new GetUrlBuilder(API.PIN_CHANGE_TAG_URL+"/"+mobile, params);
-//        String Url = getUrlBuilder.getQueryUrl();
-//        Log.d(TAG, "URL:" + Url);
-//        Log.d(TAG, "PARAMS:" + params.toString());
         String Url = API.PIN_CHANGE_TAG_URL+"/"+mobile;
         loginVerificationObjectRequest = new ObjectRequest<>(API.Method.PUT_API_METHOD, Url, new Response.Listener<LoginVerification>() {
             @Override
@@ -319,12 +278,6 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
                     finish();
 
                 }
-//                    String message = "";
-//                    for (String m : response.getError().getMessages()) {
-//                        message += (m + "\n");
-//                    }
-                    // make(loginForm, message, Snackbar.LENGTH_SHORT).show();
-              //  }
 
             }
         }, new Response.ErrorListener() {
@@ -373,9 +326,6 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
 
     protected void createProgressDialogView() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(PinChangeActivity.this);
-//        View view = View.inflate(LoginActivity.this, R.layout.progressbar_view, null);
-//        progressBarMessageTextView = (TextView) view.findViewById(R.id.progress_bar_message_text_view);
-//        alertDialogBuilder.setView(view);
         alertDialogBuilder.setCancelable(false);
         progressBarDialog = alertDialogBuilder.create();
     }

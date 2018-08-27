@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity{
     WebSettings ws ;
     EditText editText;
     Button button;
-    PreferenceManager pref;
     PermissionListener listener;
     Context context;
     MenuItem item;
@@ -87,9 +86,7 @@ public class MainActivity extends AppCompatActivity{
     SharedPreferences sharedPref;
     SharedPreferences.Editor editor;
     View rootLayout;
-    Toolbar toolbar;
     AlertDialog alertDialog;
-    CookieManager cookieManager;
     String url,latestUrl;
     UserStatus userStatus;
     boolean isLoginRequest;
@@ -504,11 +501,6 @@ public class MainActivity extends AppCompatActivity{
 
                    finish();
                }
-//                if(url.compareTo(getResources().getString(R.string.project_login_success_url))==0){
-//                    editor.putString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)).apply();
-//                }else  if(url.contains(getResources().getString(R.string.project_login_url))){
-//                    editor.putString(getResources().getString(R.string.saveCookies), "").apply();
-//                }
 
             }
 
@@ -586,58 +578,58 @@ public class MainActivity extends AppCompatActivity{
 
 
     @SuppressWarnings("deprecation")
-    public  void clearCookies( )
-    {
+//    public  void clearCookies( )
+//    {
+//
+//        editor.putString(getResources().getString(R.string.logged_in), getResources().getString(R.string.no)).apply();
+//        notDicided();
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+//            Log.d("clearCookies", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+//            editor.putString(getResources().getString(R.string.saveCookies), "").apply();
+//            CookieManager.getInstance().removeAllCookies(null);
+//            CookieManager.getInstance().flush();
+//        } else  {
+//            Log.d("clearCookies", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
+//            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
+//            cookieSyncMngr.startSync();
+//            CookieManager cookieManager=CookieManager.getInstance();
+//            cookieManager.removeAllCookie();
+//            cookieManager.removeSessionCookie();
+//            cookieSyncMngr.stopSync();
+//            cookieSyncMngr.sync();
+//        }
+//    }
 
-        editor.putString(getResources().getString(R.string.logged_in), getResources().getString(R.string.no)).apply();
-        notDicided();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            Log.d("clearCookies", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-            editor.putString(getResources().getString(R.string.saveCookies), "").apply();
-            CookieManager.getInstance().removeAllCookies(null);
-            CookieManager.getInstance().flush();
-        } else  {
-            Log.d("clearCookies", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
-            cookieSyncMngr.startSync();
-            CookieManager cookieManager=CookieManager.getInstance();
-            cookieManager.removeAllCookie();
-            cookieManager.removeSessionCookie();
-            cookieSyncMngr.stopSync();
-            cookieSyncMngr.sync();
-        }
-    }
-
-    public void openDialog(){
-        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage(getResources().getString(R.string.save_signin));
-                alertDialogBuilder.setPositiveButton(getResources().getString(R.string.dialog_yes),
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface arg0, int arg1) {
-                                saveCookies();
-                                alertDialog.dismiss();
-                            }
-                        });
-
-        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.dialog_no),new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.no)).apply();
-                alertDialog.dismiss();
-            }
-        });
-
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }
-
-    private void notDicided(){
-        editor.putString(getResources().getString(R.string.saveCookies), "").apply();
-    }
-    private void saveCookies(){
-        editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.yes)).apply();
-    }
+//    public void openDialog(){
+//        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+//        alertDialogBuilder.setMessage(getResources().getString(R.string.save_signin));
+//                alertDialogBuilder.setPositiveButton(getResources().getString(R.string.dialog_yes),
+//                        new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface arg0, int arg1) {
+//                                saveCookies();
+//                                alertDialog.dismiss();
+//                            }
+//                        });
+//
+//        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.dialog_no),new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.no)).apply();
+//                alertDialog.dismiss();
+//            }
+//        });
+//
+//        alertDialog = alertDialogBuilder.create();
+//        alertDialog.show();
+//    }
+//
+//    private void notDicided(){
+//        editor.putString(getResources().getString(R.string.saveCookies), "").apply();
+//    }
+//    private void saveCookies(){
+//        editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.yes)).apply();
+//    }
     private void showError(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.no_internet_title))
@@ -655,10 +647,10 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(isNeededToClearCookies()){
-            clearCookies();
-            Log.d("Cookies","Clear cookies");
-        }
+//        if(isNeededToClearCookies()){
+//            clearCookies();
+//            Log.d("Cookies","Clear cookies");
+//        }
         Log.d("Cookies","Clear cookies :"+sharedPref.getString(getResources().getString(R.string.saveCookies), ""));
     }
 
@@ -677,14 +669,14 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private boolean isNeededToClearCookies(){
-        if(sharedPref.getString(getResources().getString(R.string.saveCookies),
-                getResources().getString(R.string.yes)).compareTo(getResources().getString(R.string.no))==0){
-            return true;
-        }else {
-            return false;
-        }
-    }
+//    private boolean isNeededToClearCookies(){
+//        if(sharedPref.getString(getResources().getString(R.string.saveCookies),
+//                getResources().getString(R.string.yes)).compareTo(getResources().getString(R.string.no))==0){
+//            return true;
+//        }else {
+//            return false;
+//        }
+//    }
 
     private void showAlertDialogShort(){
         android.app.AlertDialog.Builder alertDialog2 = new android.app.AlertDialog.Builder(

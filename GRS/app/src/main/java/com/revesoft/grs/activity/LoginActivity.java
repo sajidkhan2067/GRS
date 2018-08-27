@@ -36,6 +36,7 @@ import com.revesoft.grs.util.AppManager;
 import com.revesoft.grs.util.Constant;
 import com.revesoft.grs.util.GetUrlBuilder;
 import com.revesoft.grs.util.ObjectRequest;
+import com.revesoft.grs.util.Util;
 import com.revesoft.grs.util.api.data.item.Login.LoginVerification;
 import com.revesoft.grs.util.api.data.item.user.UserStatus;
 
@@ -91,10 +92,6 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
 
         initializeUIViews();
         initializeButtonListeners();
-      //  loginValidator = new Validator(this);
-      //  loginValidator.setValidationListener(this);
-        // Obtain the shared Tracker instance.
-     //   AppController application = (AppController) getApplication();
         appManager = new AppManager(this);
 
         if(userStatus.getUser_mobile().compareTo("")!=0 && userStatus.getUser_id().compareTo("0")==0){
@@ -219,7 +216,9 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
                     snackbarMessages(getResources().getString(R.string.empty_pin));
                     // Toast.makeText(LoginActivity.this, "Enter your password.", Toast.LENGTH_SHORT).show();
                 } else if (checkEmpty(mobileNumberEditText) && checkEmpty(passwordEditText)) {
-                    userStatus.setUser_mobile(mobileNumberEditText.getText().toString().trim());
+                    String userName = Util.autoChangeUserName(mobileNumberEditText.getText().toString().trim());
+                    mobileNumberEditText.setText(userName);
+                    userStatus.setUser_mobile(userName);
                     userStatus.setUser_password(passwordEditText.getText().toString().trim());
                     userStatus.setUser_id("1");
                     intent = new Intent(LoginActivity.this,MainActivity.class);
@@ -257,33 +256,6 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         Log.d(TAG, "checkEmpty(EditText editText)");
         return editText.getText().toString().trim().length() != 0;
     }
-//    @Override
-//    public void onValidationSucceeded() {
-//        Log.d(TAG, "onValidationSucceeded()");
-//        if (appManager.isNetworkAvailable()) {
-//            Log.d(TAG, "handshakeRequest done");
-//
-//            mobile = mobileNumberEditText.getText().toString().trim();
-//            password = passwordEditText.getText().toString().trim();
-//            userLogin(mobile,password);
-//
-//        } else {
-//
-//            noInternetAlertDialog.show();
-//
-//        }
-//
-//    }
-
-//    @Override
-//    public void onValidationFailed(List<ValidationError> errors) {
-//        Log.d(TAG, "onValidationFailed(List<ValidationError> errors) totalError = " + errors.size());
-//        for (ValidationError validationError : errors) {
-//            makeText(LoginActivity.this, validationError.getCollatedErrorMessage(LoginActivity.this),
-//                    LENGTH_SHORT).show();
-//            break;
-//        }
-//    }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
