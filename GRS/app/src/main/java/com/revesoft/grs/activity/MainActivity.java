@@ -6,9 +6,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -24,6 +26,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -48,6 +51,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.Toolbar;
+
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -59,6 +64,7 @@ import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.revesoft.grs.R;
+import com.revesoft.grs.firebasenotifications.util.NotificationUtils;
 import com.revesoft.grs.util.API;
 import com.revesoft.grs.util.Constant;
 import com.revesoft.grs.util.api.data.item.user.UserStatus;
@@ -95,6 +101,7 @@ public class MainActivity extends AppCompatActivity{
     private String mCM;
     private ValueCallback<Uri> mUM;
     private ValueCallback<Uri[]> mUMA;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -304,6 +311,33 @@ public class MainActivity extends AppCompatActivity{
             }
         });
         urlLoader(url);
+        registerBroadcastReceiver();
+    }
+
+    private void registerBroadcastReceiver() {
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                // checking for type intent filter
+                if (intent.getAction().equals(info.androidhive.firebasenotifications.app.Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(info.androidhive.firebasenotifications.app.Config.TOPIC_GLOBAL);
+
+                  //  displayFirebaseRegId();
+
+                } else if (intent.getAction().equals(info.androidhive.firebasenotifications.app.Config.PUSH_NOTIFICATION)) {
+                    // new push notification is received
+
+                    String message = intent.getStringExtra("message");
+
+                    Toast.makeText(getApplicationContext(), "Push notification: " + message, Toast.LENGTH_LONG).show();
+
+                  //  txtMessage.setText(message);
+                }
+            }
+        };
     }
 
     @Override
@@ -545,12 +579,12 @@ public class MainActivity extends AppCompatActivity{
         if(isNetworkAvailable()) {
 
            if(url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL) && isLoginRequest) {
-               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile();
+               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile()+"&push_url="+userStatus.getFCM_Token();
                webview.postUrl(
                        API.COMPLAINANT_SIGN_IN_TAG_URL,
                        EncodingUtils.getBytes(postData, "BASE64"));
            }else if(url.contains(API.ADMIN_SIGN_IN_TAG_URL) && isLoginRequest){
-               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile();
+               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile()+"&push_url="+userStatus.getFCM_Token();;
                webview.postUrl(
                        API.ADMIN_SIGN_IN_TAG_URL,
                        EncodingUtils.getBytes(postData, "BASE64"));
@@ -576,60 +610,6 @@ public class MainActivity extends AppCompatActivity{
         res.updateConfiguration(conf, dm);
     }
 
-
-    @SuppressWarnings("deprecation")
-//    public  void clearCookies( )
-//    {
-//
-//        editor.putString(getResources().getString(R.string.logged_in), getResources().getString(R.string.no)).apply();
-//        notDicided();
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-//            Log.d("clearCookies", "Using clearCookies code for API >=" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-//            editor.putString(getResources().getString(R.string.saveCookies), "").apply();
-//            CookieManager.getInstance().removeAllCookies(null);
-//            CookieManager.getInstance().flush();
-//        } else  {
-//            Log.d("clearCookies", "Using clearCookies code for API <" + String.valueOf(Build.VERSION_CODES.LOLLIPOP_MR1));
-//            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
-//            cookieSyncMngr.startSync();
-//            CookieManager cookieManager=CookieManager.getInstance();
-//            cookieManager.removeAllCookie();
-//            cookieManager.removeSessionCookie();
-//            cookieSyncMngr.stopSync();
-//            cookieSyncMngr.sync();
-//        }
-//    }
-
-//    public void openDialog(){
-//        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-//        alertDialogBuilder.setMessage(getResources().getString(R.string.save_signin));
-//                alertDialogBuilder.setPositiveButton(getResources().getString(R.string.dialog_yes),
-//                        new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface arg0, int arg1) {
-//                                saveCookies();
-//                                alertDialog.dismiss();
-//                            }
-//                        });
-//
-//        alertDialogBuilder.setNegativeButton(getResources().getString(R.string.dialog_no),new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.no)).apply();
-//                alertDialog.dismiss();
-//            }
-//        });
-//
-//        alertDialog = alertDialogBuilder.create();
-//        alertDialog.show();
-//    }
-//
-//    private void notDicided(){
-//        editor.putString(getResources().getString(R.string.saveCookies), "").apply();
-//    }
-//    private void saveCookies(){
-//        editor.putString(getResources().getString(R.string.saveCookies), getResources().getString(R.string.yes)).apply();
-//    }
     private void showError(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getResources().getString(R.string.no_internet_title))
@@ -682,40 +662,22 @@ public class MainActivity extends AppCompatActivity{
         android.app.AlertDialog.Builder alertDialog2 = new android.app.AlertDialog.Builder(
                 MainActivity.this);
 
-// Setting Dialog Title
         alertDialog2.setTitle(getResources().getString(R.string.prompt_exit));
 
-// Setting Dialog Message
-        //  alertDialog2.setMessage("Are you sure you want delete this file?");
-
-// Setting Icon to Dialog
-        //   alertDialog2.setIcon(R.drawable.delete);
-
-        // Setting Positive "Yes" Btn
         alertDialog2.setPositiveButton(getResources().getString(R.string.dialog_yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Log out", Toast.LENGTH_SHORT)
-//                              .show();
                         dialog.cancel();
                         finish();
                     }
                 });
-// Setting Negative "NO" Btn
         alertDialog2.setNegativeButton(getResources().getString(R.string.dialog_no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Cancel", Toast.LENGTH_SHORT)
-//                              .show();
                         dialog.cancel();
                     }
                 });
 
-// Showing Alert Dialog
         alertDialog2.show();
 
     }
@@ -753,24 +715,11 @@ public class MainActivity extends AppCompatActivity{
   private void showAlertDialog(){
       AlertDialog.Builder alertDialog2 = new AlertDialog.Builder(
               MainActivity.this);
-
-// Setting Dialog Title
       alertDialog2.setTitle(getResources().getString(R.string.choose_selection));
 
-// Setting Dialog Message
-    //  alertDialog2.setMessage("Are you sure you want delete this file?");
-
-// Setting Icon to Dialog
-   //   alertDialog2.setIcon(R.drawable.delete);
-
-// Setting Positive "Yes" Btn
       alertDialog2.setNeutralButton(getResources().getString(R.string.keep_looged_in),
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
-                      // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Keep me Login", Toast.LENGTH_SHORT)
-//                              .show();
                       finish();
                   }
               });
@@ -778,10 +727,6 @@ public class MainActivity extends AppCompatActivity{
       alertDialog2.setNegativeButton(getResources().getString(R.string.log_out),
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
-                      // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Log out", Toast.LENGTH_SHORT)
-//                              .show();
                       userStatus.setUser_password("");
                       userStatus.setUser_mobile("");
                       userStatus.setUser_id("");
@@ -792,10 +737,6 @@ public class MainActivity extends AppCompatActivity{
       alertDialog2.setPositiveButton(getResources().getString(R.string.cancel),
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
-                      // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Cancel", Toast.LENGTH_SHORT)
-//                              .show();
                       dialog.cancel();
                   }
               });
@@ -814,6 +755,25 @@ public class MainActivity extends AppCompatActivity{
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
+    @Override
+    protected void onResume() {
+        // register GCM registration complete receiver
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(info.androidhive.firebasenotifications.app.Config.REGISTRATION_COMPLETE));
 
+        // register new push message receiver
+        // by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(info.androidhive.firebasenotifications.app.Config.PUSH_NOTIFICATION));
 
+        // clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+        super.onPause();
+    }
 }

@@ -8,6 +8,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         useLibrary 'org.apache.http.legacy'
         lintOptions {
@@ -48,6 +49,9 @@ dependencies {
     implementation 'com.mcxiaoke.volley:library:1.0.19'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.h6ah4i.android.materialshadowninepatch:materialshadowninepatch:0.6.5'
-
+    implementation 'com.google.gms:google-services:3.0.0'
+    implementation 'com.google.firebase:firebase-messaging:10.2.1'
 
 }
+apply plugin: 'com.google.gms.google-services'
+

@@ -4,6 +4,11 @@ import java.net.URL;
 
 public class Util {
 
+    /**
+     *
+     * @param userName
+     * @return
+     */
    public static String autoChangeUserName(String userName){
 
 

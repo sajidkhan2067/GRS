@@ -71,6 +71,15 @@ public class UserStatus {
         mPrefs.edit().putBoolean("isLogin", isLogin).commit();
     }
 
+    public String getFCM_Token() {
+        return mPrefs.getString("fcm_token", "");
+    }
+
+    public void setFCM_Token(String fcm_token) {
+
+        mPrefs.edit().putString("fcm_token", fcm_token).commit();
+    }
+
     public UserStatus() {
     }
 

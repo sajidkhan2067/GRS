@@ -361,40 +361,22 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
         android.app.AlertDialog.Builder alertDialog2 = new android.app.AlertDialog.Builder(
                 PinChangeActivity.this);
 
-// Setting Dialog Title
         alertDialog2.setTitle(getResources().getString(R.string.prompt_exit));
 
-// Setting Dialog Message
-        //  alertDialog2.setMessage("Are you sure you want delete this file?");
-
-// Setting Icon to Dialog
-        //   alertDialog2.setIcon(R.drawable.delete);
-
-        // Setting Positive "Yes" Btn
         alertDialog2.setPositiveButton(getResources().getString(R.string.dialog_yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Log out", Toast.LENGTH_SHORT)
-//                              .show();
                         dialog.cancel();
                         finish();
                     }
                 });
-// Setting Negative "NO" Btn
+
         alertDialog2.setNegativeButton(getResources().getString(R.string.dialog_no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Cancel", Toast.LENGTH_SHORT)
-//                              .show();
                         dialog.cancel();
                     }
                 });
-
-// Showing Alert Dialog
         alertDialog2.show();
 
     }

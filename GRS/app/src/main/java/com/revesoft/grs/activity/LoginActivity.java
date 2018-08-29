@@ -80,7 +80,6 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
     int timeoutCounter = 0;
     UserStatus userStatus;
     String message;
-//    private Validator loginValidator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,6 +244,10 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         }
     }
 
+    /**
+     *
+     * @param messages
+     */
     private void snackbarMessages(String messages){
         Snackbar snackbar = Snackbar
                 .make(complainant_sign_in_button, messages, Snackbar.LENGTH_LONG);
@@ -252,6 +255,11 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         snackbar.show();
     }
 
+    /**
+     *
+     * @param editText
+     * @return
+     */
     private boolean checkEmpty(EditText editText) {
         Log.d(TAG, "checkEmpty(EditText editText)");
         return editText.getText().toString().trim().length() != 0;
@@ -303,6 +311,10 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         }
     }
 
+    /**
+     *
+     * @param lang
+     */
     public void setLocale(String lang) {
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
@@ -355,20 +367,9 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
 // Setting Dialog Title
         alertDialog2.setTitle(getResources().getString(R.string.prompt_exit));
 
-// Setting Dialog Message
-        //  alertDialog2.setMessage("Are you sure you want delete this file?");
-
-// Setting Icon to Dialog
-        //   alertDialog2.setIcon(R.drawable.delete);
-
-        // Setting Positive "Yes" Btn
         alertDialog2.setPositiveButton(getResources().getString(R.string.dialog_yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Log out", Toast.LENGTH_SHORT)
-//                              .show();
                         dialog.cancel();
                         finish();
                     }
@@ -377,10 +378,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         alertDialog2.setNegativeButton(getResources().getString(R.string.dialog_no),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
-//                      Toast.makeText(getApplicationContext(),
-//                              "You clicked on Cancel", Toast.LENGTH_SHORT)
-//                              .show();
+
                         dialog.cancel();
                     }
                 });
