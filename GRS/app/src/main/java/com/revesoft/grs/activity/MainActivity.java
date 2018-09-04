@@ -11,7 +11,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -21,7 +20,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -35,8 +33,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.ConsoleMessage;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
@@ -50,8 +46,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.Toolbar;
-
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -68,9 +62,7 @@ import com.revesoft.grs.firebasenotifications.util.NotificationUtils;
 import com.revesoft.grs.util.API;
 import com.revesoft.grs.util.Constant;
 import com.revesoft.grs.util.api.data.item.user.UserStatus;
-
 import org.apache.http.util.EncodingUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -89,9 +81,9 @@ public class MainActivity extends AppCompatActivity{
     Context context;
     MenuItem item;
     ProgressBar progressBar;
-    SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
-    View rootLayout;
+  //  SharedPreferences sharedPref;
+  //  SharedPreferences.Editor editor;
+ //   View rootLayout;
     AlertDialog alertDialog;
     String url,latestUrl;
     UserStatus userStatus;
@@ -117,10 +109,10 @@ public class MainActivity extends AppCompatActivity{
              }
 
         }
-        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+      //  sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         progressBar = findViewById(R.id.progressbar);
-        editor = sharedPref.edit();
-        rootLayout = findViewById(R.id.root_layout);
+      //  editor = sharedPref.edit();
+     //   rootLayout = findViewById(R.id.root_layout);
         context = this;
         listener = new PermissionListener() {
             @Override
@@ -391,7 +383,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Snackbar.make(rootLayout, "Refreshing...", 1000).show();
+        Snackbar.make(progressBar, "Refreshing...", 1000).show();
         switch (item.getItemId()) {
             case R.id.action_home:
                 urlLoader(API.APP_URL);
@@ -543,22 +535,6 @@ public class MainActivity extends AppCompatActivity{
                 super.onPageFinished(view, url);
                 Log.d("Cookies","onPageFinished :"+url);
                 isLoginRequest=false;
-//                String cookies = CookieManager.getInstance().getCookie(url);
-//                if(cookies!=null && cookies.contains(getResources().getString(R.string.lang))) {
-//                    setLocale("en");
-//                }else {
-//                    setLocale("bn");
-//                }
-//
-//                Log.d("Cookies","sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes) :"+sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)));
-//                Log.d("Cookies","sharedPref.getString(getResources().getString(R.string.saveCookies), \"\"):"+sharedPref.getString(getResources().getString(R.string.saveCookies), ""));
-//                  if(sharedPref.getString(getResources().getString(R.string.logged_in), getResources().getString(R.string.yes)).compareTo(getResources().getString(R.string.yes))==0
-//                          && sharedPref.getString(getResources().getString(R.string.saveCookies), "").compareTo("")==0){
-//
-//                    if(cookies!=null && cookies.contains(getResources().getString(R.string.authorization))) {
-//                        openDialog();
-//                    }
-//                }
 
             }
 
@@ -579,12 +555,12 @@ public class MainActivity extends AppCompatActivity{
         if(isNetworkAvailable()) {
 
            if(url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL) && isLoginRequest) {
-               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile()+"&push_url="+userStatus.getFCM_Token();
+               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile()+"&device_token="+userStatus.getFCM_Token();
                webview.postUrl(
                        API.COMPLAINANT_SIGN_IN_TAG_URL,
                        EncodingUtils.getBytes(postData, "BASE64"));
            }else if(url.contains(API.ADMIN_SIGN_IN_TAG_URL) && isLoginRequest){
-               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile()+"&push_url="+userStatus.getFCM_Token();;
+               String postData = "password="+userStatus.getUser_password()+"&username="+userStatus.getUser_mobile()+"&device_token="+userStatus.getFCM_Token();;
                webview.postUrl(
                        API.ADMIN_SIGN_IN_TAG_URL,
                        EncodingUtils.getBytes(postData, "BASE64"));
@@ -597,17 +573,8 @@ public class MainActivity extends AppCompatActivity{
             showError();
         }
 
-        editor.putString("url", url).apply();
+        //editor.putString("url", url).apply();
         invalidateOptionsMenu();
-    }
-
-    public void setLocale(String lang) {
-        Locale myLocale = new Locale(lang);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
     }
 
     private void showError(){
@@ -627,11 +594,6 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        if(isNeededToClearCookies()){
-//            clearCookies();
-//            Log.d("Cookies","Clear cookies");
-//        }
-        Log.d("Cookies","Clear cookies :"+sharedPref.getString(getResources().getString(R.string.saveCookies), ""));
     }
 
     @Override
@@ -642,21 +604,12 @@ public class MainActivity extends AppCompatActivity{
             if (webview.copyBackForwardList().getCurrentIndex() > 0) {
                 webview.goBack();
             } else {
-//                super.onBackPressed();
                 showAlertDialogShort();
             }
 
         }
     }
 
-//    private boolean isNeededToClearCookies(){
-//        if(sharedPref.getString(getResources().getString(R.string.saveCookies),
-//                getResources().getString(R.string.yes)).compareTo(getResources().getString(R.string.no))==0){
-//            return true;
-//        }else {
-//            return false;
-//        }
-//    }
 
     private void showAlertDialogShort(){
         android.app.AlertDialog.Builder alertDialog2 = new android.app.AlertDialog.Builder(
@@ -690,7 +643,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void load_webview(){
-        String url = sharedPref.getString("url","");
+     //   String url = sharedPref.getString("url","");
         editText.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
         webview.setVisibility(View.VISIBLE);

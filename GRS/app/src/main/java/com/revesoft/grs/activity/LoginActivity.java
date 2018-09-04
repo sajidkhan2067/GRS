@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         Log.d(TAG, "onCreate(Bundle savedInstanceState)");
         super.onCreate(savedInstanceState);
         userStatus = new UserStatus(LoginActivity.this);
-        setLocale("bn");
+        Util.setLocale(LoginActivity.this,"bn");
         setContentView(R.layout.activity_login);
 
         initializeUIViews();
@@ -132,6 +132,8 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         admin_sign_in_button= (LinearLayout) findViewById(R.id.admin_sign_in_button);
         mobileNumberEditText = (EditText) findViewById(R.id.mobile_number_edit_text);
         passwordEditText = (EditText) findViewById(R.id.password_edit_text);
+
+     //   mobileNumberEditText.setText(new UserStatus(LoginActivity.this).getFCM_Token());
         createAlertDialog();
 
         createProgressDialogView();
@@ -311,18 +313,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         }
     }
 
-    /**
-     *
-     * @param lang
-     */
-    public void setLocale(String lang) {
-        Locale myLocale = new Locale(lang);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
-    }
+
 
     protected void createProgressDialogView() {
 //        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(LoginActivity.this);
