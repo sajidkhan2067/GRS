@@ -18,9 +18,10 @@
             android:layout_gravity="center"
             android:padding="16dp"
             android:textSize="16sp"
+            android:lines="3"
             android:text="@string/short_detail"
             android:gravity="center"
-            android:layout_width="300dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
     </LinearLayout>

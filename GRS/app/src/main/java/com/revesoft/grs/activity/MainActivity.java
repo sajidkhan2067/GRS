@@ -20,6 +20,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -44,6 +46,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -77,6 +80,7 @@ public class MainActivity extends AppCompatActivity{
     WebSettings ws ;
     EditText editText;
     Button button;
+    ImageView buttonHome,buttonRefresh;
     PermissionListener listener;
     Context context;
     MenuItem item;
@@ -94,6 +98,7 @@ public class MainActivity extends AppCompatActivity{
     private ValueCallback<Uri> mUM;
     private ValueCallback<Uri[]> mUMA;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
+    boolean isShowing=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -167,6 +172,8 @@ public class MainActivity extends AppCompatActivity{
         }
         editText = findViewById(R.id.url);
         button = findViewById(R.id.go_web_view);
+        buttonHome = findViewById(R.id.button_home);
+        buttonRefresh = findViewById(R.id.button_refresh);
         webview = findViewById(R.id.webView);
         editText.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
@@ -302,6 +309,18 @@ public class MainActivity extends AppCompatActivity{
                 urlLoader(editText.getText().toString());
             }
         });
+        buttonHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                urlLoader(API.APP_URL);
+            }
+        });
+        buttonRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               reload_webview();
+            }
+        });
         urlLoader(url);
         registerBroadcastReceiver();
     }
@@ -381,20 +400,20 @@ public class MainActivity extends AppCompatActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Snackbar.make(progressBar, "Refreshing...", 1000).show();
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                urlLoader(API.APP_URL);
-                return true;
-            case R.id.action_info:
-                reload_webview();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        Snackbar.make(progressBar, "Refreshing...", 1000).show();
+//        switch (item.getItemId()) {
+//            case R.id.action_home:
+//                urlLoader(API.APP_URL);
+//                return true;
+//            case R.id.action_info:
+//                reload_webview();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     private void requestStoragePermission() {
         Dexter.withActivity(this)
@@ -491,6 +510,7 @@ public class MainActivity extends AppCompatActivity{
 
         webview.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("deprecation")
+            boolean timeout=true;
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 // Handle the error
@@ -510,6 +530,7 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                timeout=true;
                 latestUrl=url;
                 Log.d("Cookies","onPageStarted :"+url);
                if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL )
@@ -528,6 +549,17 @@ public class MainActivity extends AppCompatActivity{
                    finish();
                }
 
+                Runnable run = new Runnable() {
+                    public void run() {
+                        if(timeout) {
+                            // do what you want
+                            showError();
+                        }
+                    }
+                };
+                Handler myHandler = new Handler(Looper.myLooper());
+                myHandler.postDelayed(run, 30*1000);
+
             }
 
             @Override
@@ -535,6 +567,7 @@ public class MainActivity extends AppCompatActivity{
                 super.onPageFinished(view, url);
                 Log.d("Cookies","onPageFinished :"+url);
                 isLoginRequest=false;
+                timeout=false;
 
             }
 
@@ -574,21 +607,26 @@ public class MainActivity extends AppCompatActivity{
         }
 
         //editor.putString("url", url).apply();
-        invalidateOptionsMenu();
+       // invalidateOptionsMenu();
     }
 
     private void showError(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.no_internet_title))
-                .setMessage(getResources().getString(R.string.no_internet_message))
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        if(!isShowing) {
+            isShowing=true;
+            if(this!=null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getResources().getString(R.string.no_internet_title))
+                        .setMessage(getResources().getString(R.string.no_internet_message))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+            }
+        }
     }
 
     @Override

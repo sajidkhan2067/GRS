@@ -90,4 +90,6 @@
     <dimen name="forget_password_margin">18dp</dimen>
     <dimen name="grs_image_top_margin">18dp</dimen>
     <dimen name="button_margin_top">8dp</dimen>
+    <dimen name="standard_48">48dp</dimen>
+    <dimen name="standard_4">4dp</dimen>
 </resources>

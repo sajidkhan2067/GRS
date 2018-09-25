@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:id="@+id/root_layout"
     android:layout_height="match_parent">
-
+    <include layout="@layout/heading_custom_toolbar" />
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"

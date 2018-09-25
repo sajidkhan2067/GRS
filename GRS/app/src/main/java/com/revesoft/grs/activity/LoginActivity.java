@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.revesoft.grs.Config;
 import com.revesoft.grs.R;
 import com.revesoft.grs.application.AppController;
 import com.revesoft.grs.util.API;
@@ -137,6 +138,12 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         createAlertDialog();
 
         createProgressDialogView();
+
+        if (Config.app_type == 0) {
+            admin_sign_in_button.setVisibility(View.VISIBLE);
+        }else {
+            admin_sign_in_button.setVisibility(View.INVISIBLE);
+        }
     }
     /**
      * Shows the progress UI and hides the login form.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimary">#683091</color>
     <color name="colorPrimaryDark">#1B5E20</color>
     <color name="colorAccent">#FF4081</color>
     <color name="green">#8CC63E</color>
@@ -15,7 +15,7 @@
     <color name="top_sliding_menu">#A4A4A4</color>
 
     <!--tab selector-->
-    <color name="colorBlue">#4D008C</color>
+    <color name="colorBlue">#683091</color>
     <color name="colorBlueDark">#3F0078</color>
     <color name="indicator">#ffffff</color>
 
