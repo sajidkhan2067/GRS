@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity{
     WebSettings ws ;
     EditText editText;
     Button button;
-    ImageView buttonHome,buttonRefresh;
+    ImageView buttonHome,buttonRefresh,buttonProfile,buttonLogOut;
     PermissionListener listener;
     Context context;
     MenuItem item;
@@ -174,6 +174,8 @@ public class MainActivity extends AppCompatActivity{
         button = findViewById(R.id.go_web_view);
         buttonHome = findViewById(R.id.button_home);
         buttonRefresh = findViewById(R.id.button_refresh);
+        buttonProfile = findViewById(R.id.button_profile);
+        buttonLogOut = findViewById(R.id.button_logOut);
         webview = findViewById(R.id.webView);
         editText.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
@@ -319,6 +321,18 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                reload_webview();
+            }
+        });
+        buttonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                urlLoader(API.ADMIN_SIGN_IN_SUCCESS_TAG_URL);
+            }
+        });
+        buttonLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlertDialog();
             }
         });
         urlLoader(url);
@@ -510,7 +524,7 @@ public class MainActivity extends AppCompatActivity{
 
         webview.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("deprecation")
-            boolean timeout=true;
+         //   boolean timeout=true;
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 // Handle the error
@@ -530,14 +544,12 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                timeout=true;
+               // timeout=true;
                 latestUrl=url;
                 Log.d("Cookies","onPageStarted :"+url);
                if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL )
                        || url.contains(API.ADMIN_LOG_OUT_TAG_URL)   || (url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL)&& !isLoginRequest) || (url.contains(API.ADMIN_SIGN_IN_TAG_URL)&& !isLoginRequest)){
-                   userStatus.setUser_password("");
-                   userStatus.setUser_mobile("");
-                   userStatus.setUser_id("");
+                   logOut();
                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
                    if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) ||  url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL)) {
                        intent.putExtra(Constant.message, getResources().getString(R.string.valid_username_pass));
@@ -549,16 +561,16 @@ public class MainActivity extends AppCompatActivity{
                    finish();
                }
 
-                Runnable run = new Runnable() {
-                    public void run() {
-                        if(timeout) {
-                            // do what you want
-                            showError();
-                        }
-                    }
-                };
-                Handler myHandler = new Handler(Looper.myLooper());
-                myHandler.postDelayed(run, 30*1000);
+//                Runnable run = new Runnable() {
+//                    public void run() {
+//                        if(timeout) {
+//                            // do what you want
+//                            showError();
+//                        }
+//                    }
+//                };
+//                Handler myHandler = new Handler(Looper.myLooper());
+//                myHandler.postDelayed(run, 30*1000);
 
             }
 
@@ -567,7 +579,7 @@ public class MainActivity extends AppCompatActivity{
                 super.onPageFinished(view, url);
                 Log.d("Cookies","onPageFinished :"+url);
                 isLoginRequest=false;
-                timeout=false;
+             //   timeout=false;
 
             }
 
@@ -718,9 +730,7 @@ public class MainActivity extends AppCompatActivity{
       alertDialog2.setNegativeButton(getResources().getString(R.string.log_out),
               new DialogInterface.OnClickListener() {
                   public void onClick(DialogInterface dialog, int which) {
-                      userStatus.setUser_password("");
-                      userStatus.setUser_mobile("");
-                      userStatus.setUser_id("");
+                      logOut();
                       finish();
                   }
               });
@@ -735,6 +745,12 @@ public class MainActivity extends AppCompatActivity{
 // Showing Alert Dialog
       alertDialog2.show();
 
+  }
+
+  private void logOut(){
+      userStatus.setUser_password("");
+      userStatus.setUser_mobile("");
+      userStatus.setUser_id("");
   }
 
     // Create an image file
