@@ -105,7 +105,7 @@
             android:layout_height="@dimen/vertical_32dp_margin"
             android:layout_gravity="center"
             android:layout_marginRight="2dp"
-            android:background="@drawable/account"
+            android:background="@drawable/dashboard"
             android:contentDescription="@string/app_name"
             android:scaleType="center" />
 
@@ -115,7 +115,7 @@
             android:layout_height="@dimen/vertical_32dp_margin"
             android:layout_gravity="center"
             android:layout_marginRight="2dp"
-            android:background="@drawable/power"
+            android:background="@drawable/logout"
             android:contentDescription="@string/app_name"
             android:scaleType="center" />
         <!--</LinearLayout>-->

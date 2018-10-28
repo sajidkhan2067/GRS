@@ -26,6 +26,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -180,6 +181,12 @@ public class MainActivity extends AppCompatActivity{
         editText.setVisibility(View.VISIBLE);
         button.setVisibility(View.VISIBLE);
         webview.setVisibility(View.GONE);
+
+        if(url.compareTo(API.COMPLAINANT_SIGN_IN_TAG_URL)==0){
+            buttonProfile.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_list_black_24dp));
+        }else {
+            buttonProfile.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.dashboard));
+        }
 
         ws = webview.getSettings();
         webview.setDownloadListener(new DownloadListener() {
@@ -518,9 +525,9 @@ public class MainActivity extends AppCompatActivity{
         ws.setDomStorageEnabled(true);
 
         url.trim();
-        if(!url.startsWith("http://")){
-            url = "http://" + url;
-        }
+//        if(!url.startsWith("http://")){
+//            url = "http://" + url;
+//        }
 
         webview.setWebViewClient(new WebViewClient() {
             @SuppressWarnings("deprecation")

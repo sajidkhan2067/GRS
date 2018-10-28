@@ -26,12 +26,20 @@
     <string name="cancel">বাতিল</string>
     <string name="previous_page">আগের পেজ</string>
     <string name="submit">সাবমিট</string>
-
+    <string name="empty_username">"আপনার মোবাইল নাম্বার দিন"</string>
+    <string name="valid_username">"একটি বৈধ মোবাইল নম্বর দিন"</string>
+    <string name="valid_username_pin">"একটি বৈধ মোবাইল নম্বর বা পিন দিন"</string>
+    <string name="empty_pin">"আপনার পিন দিন"</string>
+    <string name="prompt_exit">প্রস্থান করতে চান?</string>
     <string name="action_settings">Choose your selection</string>
     <string name="try_again">Keep Logged in</string>
     <string name="close_app">Log out</string>
     <string name="error">Cancel</string>
     <string name="no_internet_connection">Previous page</string>
     <string name="server_connection_fail">Submit</string>
+    <string name="logged_in">logged_in</string>
+    <string name="authorization">Authorization</string>
+    <string name="db_name">user_db</string>
+    <string name="saveCookies">saveCookies</string>
 
 </resources>
