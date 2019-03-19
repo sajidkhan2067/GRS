@@ -11,7 +11,7 @@ public interface API {
 
     String COMPLAINANT_DASHBOARD_TAG = "viewGrievances.do";
     String ADMIN_DASHBOARD_TAG = "viewMyGrievances.do";
-    String SIGN_UP_TAG = "register.do";
+    String SIGN_UP_TAG = "mobileRegistration.do";
     String FORGOT_PASSWORD_TAG = "api/citizen/reset/pincode/";
     String COMPLAINANT_SIGN_IN_TAG = "login?a=0";
     String COMPLAINANT_SIGN_IN_SUCCESS_TAG = "login/success";

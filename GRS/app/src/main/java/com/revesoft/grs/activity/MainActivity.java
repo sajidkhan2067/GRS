@@ -14,6 +14,7 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -36,6 +37,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.ConsoleMessage;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.DownloadListener;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
@@ -182,7 +185,14 @@ public class MainActivity extends AppCompatActivity{
         button.setVisibility(View.VISIBLE);
         webview.setVisibility(View.GONE);
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            buttonProfile.setBackgroundColor(ContextCompat.getColor(context, R.color.colorBlue));
+        }else {
+            buttonProfile.setBackgroundColor(getResources().getColor(R.color.colorBlue));
+        }
         if(url.compareTo(API.COMPLAINANT_SIGN_IN_TAG_URL)==0){
+
             buttonProfile.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_list_black_24dp));
         }else {
             buttonProfile.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.dashboard));
@@ -262,7 +272,7 @@ public class MainActivity extends AppCompatActivity{
             //For Android 5.0+
             public boolean onShowFileChooser(
                     WebView webview, ValueCallback<Uri[]> filePathCallback,
-                    WebChromeClient.FileChooserParams fileChooserParams) {
+                    FileChooserParams fileChooserParams) {
 
                 if (mUMA != null) {
                     mUMA.onReceiveValue(null);
@@ -651,6 +661,16 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        webview.clearCache(true);
+
+        webview.clearHistory();
+
+        webview.destroy();
+
+      //  CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(context);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookie();
+        cookieManager.removeSessionCookie();
     }
 
     @Override

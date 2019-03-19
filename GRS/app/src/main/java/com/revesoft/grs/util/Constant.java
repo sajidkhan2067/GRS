@@ -11,5 +11,4 @@ public class Constant {
     public static String lang = "lang=en";
 
 
-
 }
