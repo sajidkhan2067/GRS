@@ -41,5 +41,7 @@
     <string name="authorization">Authorization</string>
     <string name="db_name">user_db</string>
     <string name="saveCookies">saveCookies</string>
+    <string name="privacy_policy">প্রাইভেসি পলিসি</string>
+    <string name="ok">ওকে</string>
 
 </resources>

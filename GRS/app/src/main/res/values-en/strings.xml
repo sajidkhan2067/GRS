@@ -41,6 +41,8 @@
     <string name="server_connection_fail">Submit</string>
     <string name="db_name">user_db</string>
     <string name="saveCookies">saveCookies</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="ok">OK</string>
 
 
 </resources>

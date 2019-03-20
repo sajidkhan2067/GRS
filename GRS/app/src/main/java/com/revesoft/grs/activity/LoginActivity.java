@@ -17,6 +17,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,7 +63,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
     private static final String VALID_MOBILE_REG_EX = "^01(1|5|6|7|8|9)\\d{8}$";
     // UI references.
     private EditText mobileNumberEditText;
-    private TextView signUpText,forgetPasswordText;
+    private TextView signUpText,forgetPasswordText,privacyPolicyText;
 
 
     private LinearLayout complainant_sign_in_button,admin_sign_in_button;
@@ -123,6 +125,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         forgetPasswordText.setOnClickListener(this);
         complainant_sign_in_button.setOnClickListener(this);
         admin_sign_in_button.setOnClickListener(this);
+        privacyPolicyText.setOnClickListener(this);
     }
 
     private void initializeUIViews() {
@@ -133,6 +136,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         admin_sign_in_button= (LinearLayout) findViewById(R.id.admin_sign_in_button);
         mobileNumberEditText = (EditText) findViewById(R.id.mobile_number_edit_text);
         passwordEditText = (EditText) findViewById(R.id.password_edit_text);
+        privacyPolicyText = (TextView) findViewById(R.id.privacyPolicyText);
 
      //   mobileNumberEditText.setText(new UserStatus(LoginActivity.this).getFCM_Token());
         createAlertDialog();
@@ -250,7 +254,35 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
 
                 finish();
                 break;
+            case R.id.privacyPolicyText:
+                showPolicy();
+                break;
         }
+    }
+
+    private void showPolicy() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(getResources().getString(R.string.privacy_policy));
+
+        WebView wv = new WebView(this);
+        wv.loadUrl("http://www.grs.gov.bd/grsApplicationPrivacyPolicy.do");
+        wv.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                view.loadUrl(url);
+
+                return true;
+            }
+        });
+
+        alert.setView(wv);
+        alert.setNegativeButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+        alert.show();
     }
 
     /**
