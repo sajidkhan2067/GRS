@@ -545,8 +545,8 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 // Handle the error
-                showError();
-                webview.setVisibility(View.GONE);
+              //  showError();
+               // webview.setVisibility(View.GONE);
             }
 
 
@@ -738,6 +738,10 @@ public class MainActivity extends AppCompatActivity{
             showError();
         }
         webview.getSettings().setJavaScriptEnabled(true);
+//        if (18 < Build.VERSION.SDK_INT ){
+//            //18 = JellyBean MR2, KITKAT=19
+//            webview.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        }
     }
 
 
