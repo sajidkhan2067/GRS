@@ -265,7 +265,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
         alert.setTitle(getResources().getString(R.string.privacy_policy));
 
         WebView wv = new WebView(this);
-        wv.loadUrl("http://www.grs.gov.bd/grsApplicationPrivacyPolicy.do");
+        wv.loadUrl(API.POLICY_TAG_URL);
         wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

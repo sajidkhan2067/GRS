@@ -22,6 +22,7 @@ public interface API {
     String ADMIN_SIGN_IN_SUCCESS_TAG = "login/success";
     String ADMIN_SIGN_IN_FAILURE_TAG = "login?a=2";
     String PIN_CHANGE_TAG = "api/citizen/reset/pincode";
+    String POLICY_TAG = "grsApplicationPrivacyPolicy.do";
 
 
 
@@ -50,6 +51,8 @@ public interface API {
     String ADMIN_LOG_OUT_TAG_URL = APP_URL + "/"  + ADMIN_LOG_OUT_TAG;
 
     String PIN_CHANGE_TAG_URL = APP_URL + "/"  + PIN_CHANGE_TAG;
+
+    String POLICY_TAG_URL = APP_URL + "/"  + POLICY_TAG;
 
 
     interface Method {
