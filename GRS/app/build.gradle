@@ -6,8 +6,8 @@ android {
         applicationId "com.revesoft.grs"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 2004
-        versionName "2.0.04"
+        versionCode 100001
+        versionName "1.0.01"
         flavorDimensions("versionName")
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
