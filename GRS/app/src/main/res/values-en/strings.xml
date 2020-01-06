@@ -12,7 +12,8 @@
     <string name="save_signin">"Save sign-in information ?"</string>
     <string name="username">"Mobile Number"</string>
     <string name="password">"Pin"</string>
-    <string name="empty_username">"Enter your mobile number"</string>
+    <string name="empty_username_user">"Enter your mobile number"</string>
+    <string name="empty_username_admin">"Enter your user id"</string>
     <string name="valid_username">"Enter a valid mobile number"</string>
     <string name="valid_username_pin">"Enter a valid mobile number or pin"</string>
     <string name="empty_pin">"Enter your pin"</string>

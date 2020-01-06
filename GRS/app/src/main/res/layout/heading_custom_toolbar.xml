@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/vertical_50dip_margin"
+    android:layout_height="@dimen/vertical_60dip_margin"
     app:cardBackgroundColor="@color/colorBlue"
-    app:cardElevation="@dimen/vertical_8dp_margin">
+  >
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/standard_4"
+        android:padding="@dimen/vertical_8dp_margin"
+
         android:background="@color/colorBlue"
         android:orientation="horizontal">
 
@@ -101,7 +101,7 @@
 
         <ImageView
             android:id="@+id/button_profile"
-            android:layout_width="@dimen/vertical_32dp_margin"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/vertical_32dp_margin"
             android:layout_gravity="center"
             android:layout_marginRight="2dp"

@@ -12,6 +12,9 @@
     <dimen name="vertical_50dip_margin">50dip</dimen>
     <dimen name="horizontal_50dip_margin">50dip</dimen>
 
+    <dimen name="vertical_60dip_margin">60dip</dimen>
+    <dimen name="horizontal_60dip_margin">60dip</dimen>
+
     <dimen name="vertical_5dip_margin">5dip</dimen>
     <dimen name="horizontal_5dip_margin">5dip</dimen>
 

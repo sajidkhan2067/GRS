@@ -187,6 +187,8 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:src="@drawable/footer"
+            android:background="@android:color/white"
+            tools:background="@android:color/white"
             android:id="@+id/footers">
         </ImageView>
     </RelativeLayout>

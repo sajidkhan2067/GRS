@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -26,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -37,7 +35,6 @@ import com.revesoft.grs.application.AppController;
 import com.revesoft.grs.util.API;
 import com.revesoft.grs.util.AppManager;
 import com.revesoft.grs.util.Constant;
-import com.revesoft.grs.util.GetUrlBuilder;
 import com.revesoft.grs.util.ObjectRequest;
 import com.revesoft.grs.util.api.data.item.Login.LoginVerification;
 import com.revesoft.grs.util.api.data.item.user.UserStatus;
@@ -47,7 +44,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import static android.support.design.widget.Snackbar.make;
-import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * A login screen that offers login via email/password.
@@ -170,8 +166,11 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
-        showAlertDialog();
+      //  super.onBackPressed();
+     //   showAlertDialog();
+        Intent intent = new Intent(PinChangeActivity.this,LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
@@ -191,7 +190,7 @@ public class PinChangeActivity extends BaseActivity implements DialogInterface.O
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 Log.d(TAG, "Log In Button Pressed.");
                 if (!checkEmpty(mobileNumberEditText)) {
-                    snackbarMessages(getResources().getString(R.string.empty_username));
+                    snackbarMessages(getResources().getString(R.string.empty_username_user));
                 } else if (!mobileNumberEditText.getText().toString().trim().matches(VALID_MOBILE_REG_EX)) {
                     snackbarMessages(getResources().getString(R.string.valid_username_pass));
                     // Toast.makeText(LoginActivity.this, "Enter a valid mobile number.", LENGTH_SHORT).show();

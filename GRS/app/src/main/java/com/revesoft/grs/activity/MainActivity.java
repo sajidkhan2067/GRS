@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main_activity);
         requestStoragePermission();
+        setLocale("bn");
         userStatus = new UserStatus(MainActivity.this);
         Intent intent = getIntent();
         if (intent!=null) {
@@ -196,6 +197,12 @@ public class MainActivity extends AppCompatActivity{
             buttonProfile.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_list_black_24dp));
         }else {
             buttonProfile.setImageDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.dashboard));
+        }
+
+        if(url.compareTo(API.SIGN_UP_TAG_URL)==0){
+            buttonProfile.setVisibility(View.GONE);
+        }else {
+            buttonProfile.setVisibility(View.VISIBLE);
         }
 
         ws = webview.getSettings();
@@ -354,6 +361,15 @@ public class MainActivity extends AppCompatActivity{
         });
         urlLoader(url);
         registerBroadcastReceiver();
+    }
+
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
     }
 
     private void registerBroadcastReceiver() {
@@ -675,6 +691,11 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public void onBackPressed() {
+        if(latestUrl.compareTo(API.SIGN_UP_TAG_URL)==0){
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
         if(latestUrl.compareTo(API.ADMIN_DASHBOARD_TAG_URL)==0 || latestUrl.compareTo(API.COMPLAINANT_DASHBOARD_TAG_URL)==0) {
             showAlertDialog();
         }else{

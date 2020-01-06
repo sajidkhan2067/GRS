@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:id="@+id/root_layout"
     android:layout_height="match_parent">
-    <include layout="@layout/heading_custom_toolbar" />
+
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
@@ -39,6 +41,10 @@
                 android:layout_weight="1"
                 android:visibility="visible">
 
+                <include
+                    layout="@layout/heading_custom_toolbar"
+                   tools:layout="@layout/heading_custom_toolbar"
+                    />
             </WebView>
             <ProgressBar
                 android:visibility="gone"

@@ -6,14 +6,11 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,30 +22,19 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.revesoft.grs.Config;
 import com.revesoft.grs.R;
 import com.revesoft.grs.application.AppController;
 import com.revesoft.grs.util.API;
 import com.revesoft.grs.util.AppManager;
 import com.revesoft.grs.util.Constant;
-import com.revesoft.grs.util.GetUrlBuilder;
 import com.revesoft.grs.util.ObjectRequest;
 import com.revesoft.grs.util.Util;
 import com.revesoft.grs.util.api.data.item.Login.LoginVerification;
 import com.revesoft.grs.util.api.data.item.user.UserStatus;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
 import static android.support.design.widget.Snackbar.make;
-import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * A login screen that offers login via email/password.
@@ -200,7 +186,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
             case R.id.complainant_sign_in_button:
                 Log.d(TAG, "Log In Button Pressed.");
                 if (!checkEmpty(mobileNumberEditText)) {
-                    snackbarMessages(getResources().getString(R.string.empty_username));
+                    snackbarMessages(getResources().getString(R.string.empty_username_user));
                    // Toast.makeText(LoginActivity.this, "Enter your mobile number.", Toast.LENGTH_SHORT).show();
                 } else if (!checkEmpty(passwordEditText)) {
                     snackbarMessages(getResources().getString(R.string.empty_pin));
@@ -222,7 +208,7 @@ public class LoginActivity extends BaseActivity implements DialogInterface.OnCli
             case R.id.admin_sign_in_button:
                 Log.d(TAG, "Log In Button Pressed.");
                 if (!checkEmpty(mobileNumberEditText)) {
-                    snackbarMessages(getResources().getString(R.string.empty_username));
+                    snackbarMessages(getResources().getString(R.string.empty_username_admin));
                     // Toast.makeText(LoginActivity.this, "Enter your mobile number.", Toast.LENGTH_SHORT).show();
                 } else if (!checkEmpty(passwordEditText)) {
                     snackbarMessages(getResources().getString(R.string.empty_pin));
