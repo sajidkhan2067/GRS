@@ -4,6 +4,7 @@ package com.revesoft.grs.util;
 public class CheckBaseURL {
 
     String BASE_URL = "";
+    String DOPTOR_BASE_URL = "http://idp.doptor.gov.bd";
 
     public String URL() {
         if (Constant.KEY_IS_DEVELOPMENT_BUILD) {
@@ -14,6 +15,11 @@ public class CheckBaseURL {
             // BASE_URL = "http://192.168.18.170:8080";
         }
         return BASE_URL;
+    }
+
+    public String doptorURL() {
+
+        return DOPTOR_BASE_URL;
     }
 
 }

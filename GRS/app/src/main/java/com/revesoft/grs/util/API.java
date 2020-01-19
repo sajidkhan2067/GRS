@@ -8,6 +8,7 @@ import com.android.volley.Request;
 public interface API {
 
     String APP_URL = new CheckBaseURL().URL();
+    String DOPTOR_URL = new CheckBaseURL().doptorURL();
 
     String COMPLAINANT_DASHBOARD_TAG = "viewGrievances.do";
     String ADMIN_DASHBOARD_TAG = "viewMyGrievances.do";

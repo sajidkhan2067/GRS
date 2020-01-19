@@ -32,8 +32,13 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/heading_custom_toolbar"
+                />
 
             <WebView
+                android:layout_below="@+id/toolbar"
                 android:padding="8dp"
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
@@ -41,10 +46,7 @@
                 android:layout_weight="1"
                 android:visibility="visible">
 
-                <include
-                    layout="@layout/heading_custom_toolbar"
-                   tools:layout="@layout/heading_custom_toolbar"
-                    />
+
             </WebView>
             <ProgressBar
                 android:visibility="gone"

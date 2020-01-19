@@ -580,7 +580,7 @@ public class MainActivity extends AppCompatActivity{
                // timeout=true;
                 latestUrl=url;
                 Log.d("Cookies","onPageStarted :"+url);
-               if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL )
+               if( url.contains(API.COMPLAINANT_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.ADMIN_SIGN_IN_FAILURE_TAG_URL) || url.contains(API.COMPLAINANT_LOG_OUT_TAG_URL) || url.contains(API.DOPTOR_URL)
                        || url.contains(API.ADMIN_LOG_OUT_TAG_URL)   || (url.contains(API.COMPLAINANT_SIGN_IN_TAG_URL)&& !isLoginRequest) || (url.contains(API.ADMIN_SIGN_IN_TAG_URL)&& !isLoginRequest)){
                    logOut();
                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
@@ -696,7 +696,7 @@ public class MainActivity extends AppCompatActivity{
             startActivity(intent);
             finish();
         }
-        if(latestUrl.compareTo(API.ADMIN_DASHBOARD_TAG_URL)==0 || latestUrl.compareTo(API.COMPLAINANT_DASHBOARD_TAG_URL)==0) {
+        if(latestUrl.compareTo(API.COMPLAINANT_DASHBOARD_TAG_URL)==0) {
             showAlertDialog();
         }else{
             if (webview.copyBackForwardList().getCurrentIndex() > 0) {
